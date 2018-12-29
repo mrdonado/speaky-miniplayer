@@ -1,6 +1,7 @@
 {
-  "name": "electron-webpack-quick-start",
+  "name": "virtual-radio-speaker",
   "version": "0.0.0",
+  "description": "A virtual speaker for online music streaming services",
   "license": "MIT",
   "scripts": {
     "dev": "electron-webpack dev",
@@ -17,5 +18,11 @@
     "electron-builder": "^20.36.2",
     "electron-webpack": "^2.6.1",
     "webpack": "^4.26.0"
+  },
+  "build": {
+    "appId": "virtual-radio-speaker",
+    "mac": {
+      "category": "jdonado.app.virtual-radio-speaker"
+    }
   }
 }
