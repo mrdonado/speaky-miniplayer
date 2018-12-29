@@ -1,8 +1,8 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "ElectronReact",
-  "version": "0.17.1",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "name": "virtual-radio-speaker",
+  "productName": "VirtualRadioSpeaker",
+  "version": "0.0.0",
+  "description": "A virtual radio speaker for online streaming radio services",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",
@@ -57,8 +57,8 @@
   },
   "main": "./app/main.prod.js",
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.develar.ElectronReact",
+    "productName": "VirtualRadioSpeaker",
+    "appId": "org.fjrd84.VirtualRadioSpeaker",
     "files": [
       "app/dist/",
       "app/app.html",
@@ -101,39 +101,31 @@
     },
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate",
+      "owner": "fjrd84",
+      "repo": "virtual-radio-speaker",
       "private": false
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+    "url": "git+https://github.com/fjrd84/virtual-radio-speaker.git"
   },
   "author": {
-    "name": "Electron React Boilerplte Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "name": "F. Javier R. Donado",
+    "email": "fjrd84@gmail.com",
+    "url": "https://github.com/fjrd84"
   },
-  "contributors": [
-    {
-      "name": "Vikram Rangaraj",
-      "email": "vikr01@icloud.com",
-      "url": "https://github.com/vikr01"
-    },
-    {
-      "name": "Amila Welihinda",
-      "email": "amilajack@gmail.com",
-      "url": "https://github.com/amilajack"
-    }
-  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
+    "url": "https://github.com/fjrd84/virtual-radio-speaker/issues"
   },
   "keywords": [
     "electron",
-    "boilerplate",
+    "virtual",
+    "radio",
+    "speaker",
+    "spotify",
+    "miniplayer",
     "react",
     "redux",
     "flow",
@@ -142,7 +134,7 @@
     "hot",
     "reload"
   ],
-  "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
+  "homepage": "https://github.com/fjrd84/virtual-radio-speaker#readme",
   "jest": {
     "testURL": "http://localhost/",
     "moduleNameMapper": {
@@ -275,9 +267,6 @@
     "node": ">=7.x",
     "npm": ">=4.x",
     "yarn": ">=0.21.3"
-  },
-  "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
   },
   "browserslist": "electron 1.6"
 }
