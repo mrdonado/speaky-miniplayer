@@ -6,14 +6,57 @@ import routes from '../constants/routes';
 import styles from './Home.css';
 import config from '../config';
 
+// TODO: handle this information in the store
+let currentAuthData;
+let authCode;
+
 const saySomething = (text, lang = 'en-US') => {
   const message = new SpeechSynthesisUtterance();
-  const voice = window.speechSynthesis
-    .getVoices()
-    .filter(it => it.lang === lang)[0];
+  const voice = speechSynthesis.getVoices().filter(it => it.lang === lang)[0];
   message.text = text;
   message.voice = voice;
   speechSynthesis.speak(message);
+};
+
+/*
+const basicHeader = () => {
+  return btoa(`${config.spotify.clientId}:${config.spotify.spotifyClientSecret}`);
+};
+*/
+
+const getAuthorization = () => {
+  const body = new URLSearchParams();
+
+  body.append('grant_type', 'authorization_code');
+  body.append('code', authCode);
+  body.append('redirect_uri', config.spotify.redirectUri);
+  body.append('client_id', config.spotify.clientId);
+  body.append('client_secret', config.spotify.spotifyClientSecret);
+
+  const bstr = body.toString();
+
+  return fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: bstr
+  }).then(res => res.json());
+};
+
+const getCurrentTrack = () =>
+  fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${currentAuthData.access_token}` }
+  }).then(res => res.json());
+
+const trackToText = track =>
+  `Playing ${track.item.name}, by ${
+    track.item.artists[0].name
+  }, from the album ${track.item.album.name}`;
+
+const tellMeNow = () => {
+  getCurrentTrack()
+    .then(track => saySomething(trackToText(track)))
+    .catch(console.log);
 };
 
 const getToken = () => {
@@ -40,13 +83,9 @@ const getToken = () => {
       urls: [`${config.spotify.redirectUri}*`]
     },
     (details, callback) => {
-      const token = details.url.replace(
-        `${config.spotify.redirectUri}?code=`,
-        ''
-      );
-      console.log(token);
-      callback({ cancel: false });
+      authCode = details.url.replace(`${config.spotify.redirectUri}?code=`, '');
       authWindow.close();
+      callback({ cancel: false });
     }
   );
 };
@@ -62,19 +101,29 @@ export default class Home extends Component<Props> {
         <h2>Home</h2>
         <Link to={routes.COUNTER}>to Counter</Link>
 
-        <button
-          onClick={() =>
-            saySomething(
-              'You just heard whatever by whoever, from the album whatever'
-            )
-          }
-          type="button"
-        >
+        <button onClick={() => saySomething('I still work!!!')} type="button">
+          Try out the synth speech!
+        </button>
+
+        <button onClick={() => tellMeNow()} type="button">
           Inform me now!
         </button>
 
         <button onClick={() => getToken()} type="button">
           Get the token!!
+        </button>
+        <button
+          onClick={() =>
+            getAuthorization()
+              .then(auth => {
+                currentAuthData = auth;
+                return null;
+              })
+              .catch(console.log)
+          }
+          type="button"
+        >
+          Get the Authorization!!
         </button>
       </div>
     );
