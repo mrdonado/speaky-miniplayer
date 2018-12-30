@@ -14,6 +14,8 @@ Nowdays it's easy to discover new music by using randomly generated lists, but u
 
 This project has been bootstrapped with [electron-react-boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate). Refer to their README for more information.
 
+First of all, copy the file `.env.example` to a `.env` file and fill in your `clientId` and `secret`. Visit the [spotify developer dashboard](https://developer.spotify.com/dashboard/applications) for more information.
+
 Install dependencies with `yarn`.
 
 Start development with `yarn dev`.
