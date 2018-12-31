@@ -51,7 +51,7 @@ const tellMeNow = () => {
     .catch(console.log);
 };
 
-const getToken = () => {
+const getToken = cb => {
   const authWindow = new remote.BrowserWindow({
     width: 800,
     height: 600,
@@ -77,20 +77,22 @@ const getToken = () => {
     (details, callback) => {
       authCode = details.url.replace(`${config.spotify.redirectUri}?code=`, '');
       authWindow.close();
+      cb(authCode);
       callback({ cancel: false });
     }
   );
 };
 
 type Props = {
-  auth: object
+  home: object,
+  refreshCode: () => void
 };
 
 export default class Home extends Component<Props> {
   props: Props;
 
   render() {
-    const { auth } = this.props;
+    const { home, refreshCode } = this.props;
     return (
       <div className={styles.container} data-tid="container">
         <button onClick={() => saySomething('I still work!!!')} type="button">
@@ -99,7 +101,7 @@ export default class Home extends Component<Props> {
         <button onClick={() => tellMeNow()} type="button">
           Inform me now!
         </button>
-        <button onClick={() => getToken()} type="button">
+        <button onClick={() => getToken(refreshCode)} type="button">
           Get the token!!
         </button>
         <button
@@ -115,7 +117,7 @@ export default class Home extends Component<Props> {
         >
           Get the Authorization!!
         </button>
-        Current Auth {JSON.stringify(auth)}
+        Current Auth {JSON.stringify(home.auth)}
       </div>
     );
   }
