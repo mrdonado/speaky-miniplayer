@@ -1,8 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { remote } from 'electron';
-import routes from '../constants/routes';
 import styles from './Home.css';
 import config from '../config';
 
@@ -12,17 +10,11 @@ let authCode;
 
 const saySomething = (text, lang = 'en-US') => {
   const message = new SpeechSynthesisUtterance();
-  const voice = speechSynthesis.getVoices().filter(it => it.lang === lang)[0];
+  const voice = speechSynthesis.getVoices().filter(it => it.lang === lang)[2];
   message.text = text;
   message.voice = voice;
   speechSynthesis.speak(message);
 };
-
-/*
-const basicHeader = () => {
-  return btoa(`${config.spotify.clientId}:${config.spotify.spotifyClientSecret}`);
-};
-*/
 
 const getAuthorization = () => {
   const body = new URLSearchParams();
@@ -49,7 +41,7 @@ const getCurrentTrack = () =>
   }).then(res => res.json());
 
 const trackToText = track =>
-  `Playing ${track.item.name}, by ${
+  `You're listening to ${track.item.name}, by ${
     track.item.artists[0].name
   }, from the album ${track.item.album.name}`;
 
@@ -90,33 +82,31 @@ const getToken = () => {
   );
 };
 
-type Props = {};
+type Props = {
+  auth: object
+};
 
 export default class Home extends Component<Props> {
   props: Props;
 
   render() {
+    const { auth } = this.props;
     return (
       <div className={styles.container} data-tid="container">
-        <h2>Home</h2>
-        <Link to={routes.COUNTER}>to Counter</Link>
-
         <button onClick={() => saySomething('I still work!!!')} type="button">
           Try out the synth speech!
         </button>
-
         <button onClick={() => tellMeNow()} type="button">
           Inform me now!
         </button>
-
         <button onClick={() => getToken()} type="button">
           Get the token!!
         </button>
         <button
           onClick={() =>
             getAuthorization()
-              .then(auth => {
-                currentAuthData = auth;
+              .then(authData => {
+                currentAuthData = authData;
                 return null;
               })
               .catch(console.log)
@@ -125,6 +115,7 @@ export default class Home extends Component<Props> {
         >
           Get the Authorization!!
         </button>
+        Current Auth {JSON.stringify(auth)}
       </div>
     );
   }
