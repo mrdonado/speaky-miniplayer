@@ -14,7 +14,7 @@ try {
   console.warn("The initial state couldn't be parsed");
 }
 
-const store = configureStore(initialState);
+const store = initialState ? configureStore(initialState) : configureStore();
 
 // Persist the store on every update
 store.subscribe(() => {
