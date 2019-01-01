@@ -53,6 +53,22 @@ export default class Home extends Component<Props> {
       setSpotifyCredentials,
       updateSpotifyAccessToken
     } = this.props;
+    const isAuthorized = !!home.credentials.spotify;
+    if (!isAuthorized) {
+      return (
+        <div>
+          {
+            "So that the virtual radio speaker knows what you're listening to, you first need to connect the app to your Spotify account."
+          }
+          <button
+            onClick={() => getSpotifyCredentials(setSpotifyCredentials)}
+            type="button"
+          >
+            Connect now
+          </button>
+        </div>
+      );
+    }
     return (
       <div className={styles.container} data-tid="container">
         <button onClick={() => saySomething('I still work!!!')} type="button">
@@ -64,12 +80,7 @@ export default class Home extends Component<Props> {
         >
           Inform me now!
         </button>
-        <button
-          onClick={() => getSpotifyCredentials(setSpotifyCredentials)}
-          type="button"
-        >
-          Get the credentials
-        </button>
+
         <button
           onClick={() => {
             refreshSpotifyToken(
