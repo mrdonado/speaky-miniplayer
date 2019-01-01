@@ -5,7 +5,21 @@ import Root from './containers/Root';
 import { configureStore, history } from './store/configureStore';
 import './app.global.css';
 
-const store = configureStore();
+let initialState;
+
+// Try to recover the last state when starting up
+try {
+  initialState = JSON.parse(localStorage.getItem('store'));
+} catch {
+  console.warn("The initial state couldn't be parsed");
+}
+
+const store = configureStore(initialState);
+
+// Persist the store on every update
+store.subscribe(() => {
+  localStorage.setItem('store', JSON.stringify(store.getState()));
+});
 
 render(
   <AppContainer>
