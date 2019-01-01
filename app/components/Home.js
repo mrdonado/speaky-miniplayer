@@ -5,11 +5,15 @@ import styles from './Home.css';
 import config from '../config';
 
 const saySomething = (text, lang = 'en-US') => {
-  const message = new SpeechSynthesisUtterance();
-  const voice = speechSynthesis.getVoices().filter(it => it.lang === lang)[2];
-  message.text = text;
-  message.voice = voice;
-  speechSynthesis.speak(message);
+  try {
+    const message = new SpeechSynthesisUtterance();
+    const voice = speechSynthesis.getVoices().filter(it => it.lang === lang)[2];
+    message.text = text;
+    message.voice = voice;
+    speechSynthesis.speak(message);
+  } catch (e) {
+    console.log(`Error while using TTS: ${e.message}`);
+  }
 };
 
 const getSpotifyCredentials = setSpotifyCredentials => {
@@ -117,14 +121,19 @@ const refreshSpotifyToken = (token, cb) => {
 
 type Props = {
   home: object,
-  setSpotifyCredentials: () => void
+  setSpotifyCredentials: () => void,
+  updateSpotifyAccessToken: () => void
 };
 
 export default class Home extends Component<Props> {
   props: Props;
 
   render() {
-    const { home, setSpotifyCredentials } = this.props;
+    const {
+      home,
+      setSpotifyCredentials,
+      updateSpotifyAccessToken
+    } = this.props;
     return (
       <div className={styles.container} data-tid="container">
         <button onClick={() => saySomething('I still work!!!')} type="button">
@@ -146,9 +155,7 @@ export default class Home extends Component<Props> {
           onClick={() => {
             refreshSpotifyToken(
               home.credentials.spotify.refresh_token,
-              accessToken => {
-                console.log(`New token: ${JSON.stringify(accessToken)}`);
-              }
+              updateSpotifyAccessToken
             );
           }}
           type="button"
