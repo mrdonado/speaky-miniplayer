@@ -1,8 +1,11 @@
 // @flow
 import React, { Component } from 'react';
-import { remote } from 'electron';
 import styles from './Home.css';
-import config from '../config';
+import {
+  getCurrentTrack,
+  getSpotifyCredentials,
+  refreshSpotifyToken
+} from '../utils/spotify-tools';
 
 const saySomething = (text, lang = 'en-US') => {
   try {
@@ -15,36 +18,6 @@ const saySomething = (text, lang = 'en-US') => {
     console.log(`Error while using TTS: ${e.message}`);
   }
 };
-
-const getSpotifyCredentials = setSpotifyCredentials => {
-  const cb = authCode => {
-    const body = new URLSearchParams();
-
-    body.append('grant_type', 'authorization_code');
-    body.append('code', authCode);
-    body.append('redirect_uri', config.spotify.redirectUri);
-    body.append('client_id', config.spotify.clientId);
-    body.append('client_secret', config.spotify.spotifyClientSecret);
-
-    const bstr = body.toString();
-
-    return fetch('https://accounts.spotify.com/api/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: bstr
-    })
-      .then(res => res.json())
-      .then(setSpotifyCredentials)
-      .catch(console.log);
-  };
-  getAuthCode(cb);
-};
-
-const getCurrentTrack = accessToken =>
-  fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-    method: 'GET',
-    headers: { Authorization: `Bearer ${accessToken}` }
-  }).then(res => res.json());
 
 const trackToText = track =>
   `You're listening to ${track.item.name}, by ${
@@ -61,61 +34,6 @@ const tellMeNow = accessToken => {
       return res;
     })
     .then(track => saySomething(trackToText(track)))
-    .catch(console.log);
-};
-
-const getAuthCode = cb => {
-  const authWindow = new remote.BrowserWindow({
-    width: 800,
-    height: 600,
-    show: false,
-    'node-integration': false,
-    'web-security': false
-  });
-
-  const authUrl = `https://accounts.spotify.com/en/authorize?client_id=${
-    config.spotify.clientId
-  }&response_type=code&redirect_uri=${encodeURIComponent(
-    config.spotify.redirectUri
-  )}&scope=${encodeURI(config.spotify.scopes)}`;
-
-  authWindow.loadURL(authUrl);
-
-  authWindow.show();
-
-  authWindow.webContents.session.webRequest.onBeforeRequest(
-    {
-      urls: [`${config.spotify.redirectUri}*`]
-    },
-    (details, callback) => {
-      const authCode = details.url.replace(
-        `${config.spotify.redirectUri}?code=`,
-        ''
-      );
-      authWindow.close();
-      cb(authCode);
-      callback({ cancel: false });
-    }
-  );
-};
-
-const refreshSpotifyToken = (token, cb) => {
-  const body = new URLSearchParams();
-
-  body.append('grant_type', 'refresh_token');
-  body.append('refresh_token', token);
-  body.append('client_id', config.spotify.clientId);
-  body.append('client_secret', config.spotify.spotifyClientSecret);
-
-  const bstr = body.toString();
-
-  return fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: bstr
-  })
-    .then(res => res.json())
-    .then(cb)
     .catch(console.log);
 };
 
