@@ -1,11 +1,11 @@
 // @flow
 // import type { GetState, Dispatch } from '../reducers/types';
 
-export const REFRESH_CODE = 'REFRESH_CODE';
+export const SET_SPOTIFY_CREDENTIALS = 'SET_SPOTIFY_CREDENTIALS';
 
-export function refreshCode(code) {
+export function setSpotifyCredentials(credentials) {
   return {
-    code,
-    type: REFRESH_CODE
+    credentials,
+    type: SET_SPOTIFY_CREDENTIALS
   };
 }

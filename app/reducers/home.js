@@ -1,17 +1,15 @@
 // @flow
-import { REFRESH_CODE } from '../actions/home';
+import { SET_SPOTIFY_CREDENTIALS } from '../actions/home';
 import type { Action } from './types';
 
-const initialState = {
-  auth: {
-    code: ''
-  }
-};
+const initialState = { credentials: {} };
 
 export default function home(state = initialState, action: Action) {
   switch (action.type) {
-    case REFRESH_CODE:
-      return Object.assign({}, state, { auth: { code: action.code } });
+    case SET_SPOTIFY_CREDENTIALS:
+      return Object.assign({}, state, {
+        credentials: { spotify: action.credentials }
+      });
     default:
       return state;
   }

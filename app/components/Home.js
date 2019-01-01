@@ -4,10 +4,6 @@ import { remote } from 'electron';
 import styles from './Home.css';
 import config from '../config';
 
-// TODO: handle this information in the store
-let currentAuthData;
-let authCode;
-
 const saySomething = (text, lang = 'en-US') => {
   const message = new SpeechSynthesisUtterance();
   const voice = speechSynthesis.getVoices().filter(it => it.lang === lang)[2];
@@ -16,28 +12,34 @@ const saySomething = (text, lang = 'en-US') => {
   speechSynthesis.speak(message);
 };
 
-const getAuthorization = () => {
-  const body = new URLSearchParams();
+const getSpotifyCredentials = setSpotifyCredentials => {
+  const cb = authCode => {
+    const body = new URLSearchParams();
 
-  body.append('grant_type', 'authorization_code');
-  body.append('code', authCode);
-  body.append('redirect_uri', config.spotify.redirectUri);
-  body.append('client_id', config.spotify.clientId);
-  body.append('client_secret', config.spotify.spotifyClientSecret);
+    body.append('grant_type', 'authorization_code');
+    body.append('code', authCode);
+    body.append('redirect_uri', config.spotify.redirectUri);
+    body.append('client_id', config.spotify.clientId);
+    body.append('client_secret', config.spotify.spotifyClientSecret);
 
-  const bstr = body.toString();
+    const bstr = body.toString();
 
-  return fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: bstr
-  }).then(res => res.json());
+    return fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: bstr
+    })
+      .then(res => res.json())
+      .then(setSpotifyCredentials)
+      .catch(console.log);
+  };
+  getAuthCode(cb);
 };
 
-const getCurrentTrack = () =>
+const getCurrentTrack = accessToken =>
   fetch('https://api.spotify.com/v1/me/player/currently-playing', {
     method: 'GET',
-    headers: { Authorization: `Bearer ${currentAuthData.access_token}` }
+    headers: { Authorization: `Bearer ${accessToken}` }
   }).then(res => res.json());
 
 const trackToText = track =>
@@ -45,13 +47,13 @@ const trackToText = track =>
     track.item.artists[0].name
   }, from the album ${track.item.album.name}`;
 
-const tellMeNow = () => {
-  getCurrentTrack()
+const tellMeNow = accessToken => {
+  getCurrentTrack(accessToken)
     .then(track => saySomething(trackToText(track)))
     .catch(console.log);
 };
 
-const getToken = cb => {
+const getAuthCode = cb => {
   const authWindow = new remote.BrowserWindow({
     width: 800,
     height: 600,
@@ -75,7 +77,10 @@ const getToken = cb => {
       urls: [`${config.spotify.redirectUri}*`]
     },
     (details, callback) => {
-      authCode = details.url.replace(`${config.spotify.redirectUri}?code=`, '');
+      const authCode = details.url.replace(
+        `${config.spotify.redirectUri}?code=`,
+        ''
+      );
       authWindow.close();
       cb(authCode);
       callback({ cancel: false });
@@ -85,39 +90,31 @@ const getToken = cb => {
 
 type Props = {
   home: object,
-  refreshCode: () => void
+  setSpotifyCredentials: () => void
 };
 
 export default class Home extends Component<Props> {
   props: Props;
 
   render() {
-    const { home, refreshCode } = this.props;
+    const { home, setSpotifyCredentials } = this.props;
     return (
       <div className={styles.container} data-tid="container">
         <button onClick={() => saySomething('I still work!!!')} type="button">
           Try out the synth speech!
         </button>
-        <button onClick={() => tellMeNow()} type="button">
-          Inform me now!
-        </button>
-        <button onClick={() => getToken(refreshCode)} type="button">
-          Get the token!!
-        </button>
         <button
-          onClick={() =>
-            getAuthorization()
-              .then(authData => {
-                currentAuthData = authData;
-                return null;
-              })
-              .catch(console.log)
-          }
+          onClick={() => tellMeNow(home.credentials.spotify.access_token)}
           type="button"
         >
-          Get the Authorization!!
+          Inform me now!
         </button>
-        Current Auth {JSON.stringify(home.auth)}
+        <button
+          onClick={() => getSpotifyCredentials(setSpotifyCredentials)}
+          type="button"
+        >
+          Get the credentials
+        </button>
       </div>
     );
   }

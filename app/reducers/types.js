@@ -2,7 +2,7 @@ import type { Dispatch as ReduxDispatch, Store as ReduxStore } from 'redux';
 
 export type homeStateType = {
   +counter: number,
-  +auth: object
+  +credentials: object
 };
 
 export type Action = {
