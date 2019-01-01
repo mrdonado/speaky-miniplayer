@@ -49,6 +49,13 @@ const trackToText = track =>
 
 const tellMeNow = accessToken => {
   getCurrentTrack(accessToken)
+    .then(res => {
+      if (res.error && res.error.message.indexOf('token expired') > -1) {
+        console.log('Token expired!!');
+        throw new Error('The token expired, a new one will be obtained');
+      }
+      return res;
+    })
     .then(track => saySomething(trackToText(track)))
     .catch(console.log);
 };
@@ -88,6 +95,26 @@ const getAuthCode = cb => {
   );
 };
 
+const refreshSpotifyToken = (token, cb) => {
+  const body = new URLSearchParams();
+
+  body.append('grant_type', 'refresh_token');
+  body.append('refresh_token', token);
+  body.append('client_id', config.spotify.clientId);
+  body.append('client_secret', config.spotify.spotifyClientSecret);
+
+  const bstr = body.toString();
+
+  return fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: bstr
+  })
+    .then(res => res.json())
+    .then(cb)
+    .catch(console.log);
+};
+
 type Props = {
   home: object,
   setSpotifyCredentials: () => void
@@ -114,6 +141,19 @@ export default class Home extends Component<Props> {
           type="button"
         >
           Get the credentials
+        </button>
+        <button
+          onClick={() => {
+            refreshSpotifyToken(
+              home.credentials.spotify.refresh_token,
+              accessToken => {
+                console.log(`New token: ${JSON.stringify(accessToken)}`);
+              }
+            );
+          }}
+          type="button"
+        >
+          Refresh token!
         </button>
       </div>
     );
