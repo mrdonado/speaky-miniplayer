@@ -10,5 +10,6 @@ export default {
     redirectUri: process.env.REDIRECT_URI || 'http://localhost/tokencallback',
     scopes:
       'user-read-playback-state user-modify-playback-state playlist-read-collaborative playlist-read-private playlist-modify-public playlist-modify-private user-library-modify'
-  }
+  },
+  updateInterval: 5000
 };
