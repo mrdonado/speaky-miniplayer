@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import { ipcRenderer } from 'electron';
 import styles from './Home.css';
 import {
   getCurrentTrack,
@@ -91,6 +92,12 @@ export default class Home extends Component<Props> {
           type="button"
         >
           Refresh token!
+        </button>
+        <button
+          type="button"
+          onClick={() => ipcRenderer.send('swap-always-on-top')}
+        >
+          Swap always on top
         </button>
       </div>
     );
