@@ -10,7 +10,7 @@
  *
  * @flow
  */
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -50,6 +50,12 @@ const installExtensions = async () => {
 /**
  * Add event listeners...
  */
+
+ipcMain.on('swap-always-on-top', () => {
+  if (mainWindow) {
+    mainWindow.setAlwaysOnTop(!mainWindow.isAlwaysOnTop());
+  }
+});
 
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
