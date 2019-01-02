@@ -5,6 +5,10 @@ import Root from './containers/Root';
 import { history } from './store/configureStore';
 import './app.global.css';
 import store from './store';
+import CronjobService from './services/CronjobService';
+
+// Start the cronjob
+CronjobService.start();
 
 render(
   <AppContainer>
