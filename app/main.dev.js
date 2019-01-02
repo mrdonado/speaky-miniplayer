@@ -69,8 +69,11 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728
+    resizable: false,
+    width: 500,
+    height: 500,
+    fullscreenable: false,
+    titleBarStyle: 'hiddenInset'
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
