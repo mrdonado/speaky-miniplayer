@@ -3,9 +3,11 @@ import store from '../store';
 import config from '../config';
 import TTS from '../utils/TTSUtils';
 import Spotify from '../utils/Spotify';
-import { updateAccessToken } from '../actions/home';
-
-let previousMessage;
+import {
+  updateAccessToken,
+  updateCurrentTrack,
+  updateLastMessage
+} from '../actions/home';
 
 let cronjobId;
 
@@ -25,13 +27,14 @@ const nextMessage = async accessToken => {
   if (track.error) {
     throw Error(track.error.message);
   }
+  store.dispatch(updateCurrentTrack(track));
   return trackToText(track);
 };
 
 const cronjobTasks = async () => {
   const state = store.getState();
   // The current service is for now only 'spotify'
-  const { currentService } = state.home;
+  const { currentService, lastMessage } = state.home;
   if (
     !state.home.credentials ||
     !state.home.credentials[currentService] ||
@@ -50,14 +53,14 @@ const cronjobTasks = async () => {
     }
     return;
   }
-  if (message !== previousMessage) {
+  if (message !== lastMessage) {
     notifier.notify({
       title: 'Virtual Radio Speaker',
       message,
       icon: false
     });
     TTS.saySomething(message);
-    previousMessage = message;
+    store.dispatch(updateLastMessage(message));
   }
 };
 
