@@ -28,7 +28,7 @@ export default class Home extends Component<Props> {
             "So that the virtual radio speaker knows what you're listening to, you first need to connect the app to your Spotify account."
           }
           <button
-            onClick={() => Spotify.getSpotifyCredentials(setSpotifyCredentials)}
+            onClick={() => Spotify.getCredentials(setSpotifyCredentials)}
             type="button"
           >
             Connect now

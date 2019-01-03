@@ -14,7 +14,7 @@ const trackToText = track =>
   }, from the album ${track.item.album.name}`;
 
 const refreshToken = _refreshToken => {
-  Spotify.refreshSpotifyToken(_refreshToken, credentials => {
+  Spotify.refreshToken(_refreshToken, credentials => {
     store.dispatch(updateSpotifyAccessToken(credentials));
   });
 };

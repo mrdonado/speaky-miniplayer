@@ -1,7 +1,7 @@
 import { remote } from 'electron';
 import config from '../config';
 
-const getSpotifyCredentials = setSpotifyCredentials => {
+const getCredentials = setSpotifyCredentials => {
   const cb = authCode => {
     const body = new URLSearchParams();
 
@@ -73,7 +73,7 @@ const getAuthCode = cb => {
   );
 };
 
-const refreshSpotifyToken = (token, cb) => {
+const refreshToken = (token, cb) => {
   const body = new URLSearchParams();
 
   body.append('grant_type', 'refresh_token');
@@ -94,7 +94,7 @@ const refreshSpotifyToken = (token, cb) => {
 };
 
 export default {
-  getSpotifyCredentials,
+  getCredentials,
   getCurrentTrack,
-  refreshSpotifyToken
+  refreshToken
 };
