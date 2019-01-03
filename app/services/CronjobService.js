@@ -9,9 +9,9 @@ let previousMessage;
 let cronjobId;
 
 const trackToText = track =>
-  `You're listening to ${track.item.name}, by ${
-    track.item.artists[0].name
-  }, from the album ${track.item.album.name}`;
+  `You're listening to ${track.title}, by ${track.artist}, from the album ${
+    track.album
+  }`;
 
 const refreshAccessToken = refreshToken => {
   Spotify.refreshToken(refreshToken)

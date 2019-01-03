@@ -37,6 +37,13 @@ const getCredentials = () =>
     }).then(res => res.json());
   });
 
+const spotifyTrackToGenericMap = track => ({
+  title: track.item.name,
+  album: track.item.album.name,
+  artist: track.item.artists[0].name,
+  coverArt: track.item.album.images[0].url
+});
+
 /**
  * It returns a promise with the track currently being played
  */
@@ -44,7 +51,9 @@ const getCurrentTrack = accessToken =>
   fetch('https://api.spotify.com/v1/me/player/currently-playing', {
     method: 'GET',
     headers: { Authorization: `Bearer ${accessToken}` }
-  }).then(res => res.json());
+  })
+    .then(res => res.json())
+    .then(spotifyTrackToGenericMap);
 
 /**
  * This is a private (not exported) function.
