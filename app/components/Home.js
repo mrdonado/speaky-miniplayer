@@ -42,7 +42,11 @@ export default class Home extends Component<Props> {
       );
     }
     return (
-      <div className={styles.container} data-tid="container">
+      <div
+        data-tid="container"
+        className={styles.container}
+        style={{ backgroundImage: `url(${home.currentTrack.coverArt})` }}
+      >
         <button
           onClick={() => TTSUtils.saySomething('I still work!!!')}
           type="button"
