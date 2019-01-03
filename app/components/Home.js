@@ -7,7 +7,7 @@ import TTSUtils from '../utils/TTSUtils';
 
 type Props = {
   home: object,
-  setSpotifyCredentials: () => void
+  setCredentials: () => void
 };
 
 const callUpdateService = () => {
@@ -19,8 +19,9 @@ export default class Home extends Component<Props> {
   props: Props;
 
   render() {
-    const { home, setSpotifyCredentials } = this.props;
-    const isAuthorized = !!home.credentials.spotify;
+    const { home, setCredentials } = this.props;
+    const isAuthorized =
+      !!home.credentials.spotify && !!home.credentials.spotify.refresh_token;
     if (!isAuthorized) {
       return (
         <div>
@@ -28,7 +29,11 @@ export default class Home extends Component<Props> {
             "So that the virtual radio speaker knows what you're listening to, you first need to connect the app to your Spotify account."
           }
           <button
-            onClick={() => Spotify.getCredentials(setSpotifyCredentials)}
+            onClick={() =>
+              Spotify.getCredentials().then(credentials =>
+                setCredentials(credentials, 'spotify')
+              )
+            }
             type="button"
           >
             Connect now

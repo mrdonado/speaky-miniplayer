@@ -1,8 +1,25 @@
 import { remote } from 'electron';
 import config from '../config';
 
-const getCredentials = setSpotifyCredentials => {
-  const cb = authCode => {
+/**
+ * It returns a promise that resolves to the spotify credentials:
+ *
+ * ```
+ * {
+ *   access_token: '...',
+ *   token_type: 'Bearer',
+ *   expires_in: 3600,
+ *   refresh_token: '...',
+ *   scope: '...'
+ * }
+ * ```
+ *
+ */
+const getCredentials = () =>
+  getAuthCode().then(authCode => {
+    // With the one-use `authCode` we retrieve now the credentials,
+    // containing an `access_token` and a `refresh_token`.
+
     const body = new URLSearchParams();
 
     body.append('grant_type', 'authorization_code');
@@ -17,14 +34,12 @@ const getCredentials = setSpotifyCredentials => {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: bstr
-    })
-      .then(res => res.json())
-      .then(setSpotifyCredentials)
-      .catch(console.log);
-  };
-  getAuthCode(cb);
-};
+    }).then(res => res.json());
+  });
 
+/**
+ * It returns a promise with the track currently being played
+ */
 const getCurrentTrack = accessToken =>
   fetch('https://api.spotify.com/v1/me/player/currently-playing', {
     method: 'GET',
@@ -32,11 +47,30 @@ const getCurrentTrack = accessToken =>
   }).then(res => res.json());
 
 /**
+ * This is a private (not exported) function.
+ *
+ * `getAuthCode` is the same function as `getAuthCodeCb` but instead of
+ * requiring a callback, it returns a promise that resolves to the
+ * authorization code if it has been granted or that will be rejected
+ * otherwise.
+ */
+const getAuthCode = () =>
+  new Promise((resolve, reject) => {
+    try {
+      getAuthCodeCb(resolve);
+    } catch (e) {
+      reject(e);
+    }
+  });
+
+/**
+ * This is a private (not exported) function.
+ *
  * Show a window in order to request user permission to use his/her account.
  * If the access is granted, the one-use access code will be returned to the
  * `cb` callback.
  */
-const getAuthCode = cb => {
+const getAuthCodeCb = cb => {
   const authWindow = new remote.BrowserWindow({
     width: 800,
     height: 600,
@@ -60,20 +94,23 @@ const getAuthCode = cb => {
       urls: [`${config.spotify.redirectUri}*`]
     },
     (details, callback) => {
-      const authCode = details.url.replace(
-        `${config.spotify.redirectUri}?code=`,
-        ''
-      );
-      authWindow.close();
-      if (authCode && typeof cb === 'function') {
-        cb(authCode);
+      if (details.url.indexOf('?code=') > -1) {
+        cb(details.url.replace(`${config.spotify.redirectUri}?code=`, ''));
+      } else {
+        throw new Error('No authorization has been granted.');
       }
+
+      authWindow.close();
       callback({ cancel: false });
     }
   );
 };
 
-const refreshToken = (token, cb) => {
+/**
+ * It returns a promise that resolves to a new `access_token`,
+ * given a known `refresh_token`.
+ */
+const refreshToken = token => {
   const body = new URLSearchParams();
 
   body.append('grant_type', 'refresh_token');
@@ -87,10 +124,7 @@ const refreshToken = (token, cb) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: bstr
-  })
-    .then(res => res.json())
-    .then(cb)
-    .catch(console.log);
+  }).then(res => res.json());
 };
 
 export default {

@@ -2,7 +2,7 @@ import store from '../store';
 import config from '../config';
 import TTS from '../utils/TTSUtils';
 import Spotify from '../utils/Spotify';
-import { updateSpotifyAccessToken } from '../actions/home';
+import { updateAccessToken } from '../actions/home';
 
 let previousMessage;
 
@@ -14,9 +14,9 @@ const trackToText = track =>
   }, from the album ${track.item.album.name}`;
 
 const refreshAccessToken = refreshToken => {
-  Spotify.refreshToken(refreshToken, credentials => {
-    store.dispatch(updateSpotifyAccessToken(credentials));
-  });
+  Spotify.refreshToken(refreshToken)
+    .then(credentials => store.dispatch(updateAccessToken(credentials)))
+    .catch(console.log);
 };
 
 const nextMessage = async accessToken => {
@@ -31,7 +31,11 @@ const cronjobTasks = async () => {
   const state = store.getState();
   // The current service is for now only 'spotify'
   const { currentService } = state.home;
-  if (!state.home.credentials || !state.home.credentials[currentService]) {
+  if (
+    !state.home.credentials ||
+    !state.home.credentials[currentService] ||
+    !state.home.credentials[currentService].refresh_token
+  ) {
     console.log('No update will be performed until the app is authorized.');
     return;
   }
@@ -52,7 +56,6 @@ const cronjobTasks = async () => {
 };
 
 const start = () => {
-  TTS.saySomething('Hello music listener!');
   cronjobId = setInterval(cronjobTasks, config.updateInterval);
 };
 

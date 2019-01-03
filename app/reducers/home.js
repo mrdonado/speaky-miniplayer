@@ -1,34 +1,23 @@
 // @flow
-import {
-  SET_SPOTIFY_CREDENTIALS,
-  UPDATE_SPOTIFY_ACCESS_TOKEN
-} from '../actions/home';
+import { SET_CREDENTIALS, UPDATE_ACCESS_TOKEN } from '../actions/home';
 import type { Action } from './types';
 
 const initialState = { credentials: {}, currentService: 'spotify' };
 
-const updateOneKey = (oldObject, key, value) => {
-  const newObject = Object.assign({}, oldObject);
-  newObject[key] = value;
-  return newObject;
-};
-
 export default function home(state = initialState, action: Action) {
+  const { musicService } = action;
+  let credentials = {};
+
   switch (action.type) {
-    case SET_SPOTIFY_CREDENTIALS:
-      return Object.assign({}, state, {
-        credentials: { spotify: action.credentials }
-      });
-    case UPDATE_SPOTIFY_ACCESS_TOKEN:
-      return Object.assign({}, state, {
-        credentials: {
-          spotify: updateOneKey(
-            state.credentials.spotify,
-            'access_token',
-            action.access_token
-          )
-        }
-      });
+    case SET_CREDENTIALS:
+      credentials[action.musicService] = action.credentials;
+      return Object.assign({}, state, { credentials });
+
+    case UPDATE_ACCESS_TOKEN:
+      credentials = Object.assign({}, state.credentials);
+      credentials[musicService].access_token = action.access_token;
+      return Object.assign({}, state, { credentials });
+
     default:
       return state;
   }

@@ -1,19 +1,21 @@
 // @flow
 // import type { GetState, Dispatch } from '../reducers/types';
 
-export const SET_SPOTIFY_CREDENTIALS = 'SET_SPOTIFY_CREDENTIALS';
-export const UPDATE_SPOTIFY_ACCESS_TOKEN = 'UPDATE_SPOTIFY_ACCESS_TOKEN';
+export const SET_CREDENTIALS = 'SET_CREDENTIALS';
+export const UPDATE_ACCESS_TOKEN = 'UPDATE_ACCESS_TOKEN';
 
-export function setSpotifyCredentials(credentials) {
+export function setCredentials(credentials, musicService = 'spotify') {
   return {
     credentials,
-    type: SET_SPOTIFY_CREDENTIALS
+    musicService,
+    type: SET_CREDENTIALS
   };
 }
 
-export function updateSpotifyAccessToken(credentials) {
+export function updateAccessToken(credentials, musicService = 'spotify') {
   return {
-    type: UPDATE_SPOTIFY_ACCESS_TOKEN,
+    musicService,
+    type: UPDATE_ACCESS_TOKEN,
     access_token: credentials.access_token
   };
 }

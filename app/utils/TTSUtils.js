@@ -15,7 +15,7 @@ speechSynthesis.onvoiceschanged = () => {
   voicesReady = true;
 };
 
-const saySomething = (text, lang = 'en-US') => {
+const saySomething = (text = '', lang = 'en-US') => {
   if (!voicesReady) return;
   const message = new SpeechSynthesisUtterance();
   message.onerror = errorCallback;
