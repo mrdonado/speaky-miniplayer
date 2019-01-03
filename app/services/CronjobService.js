@@ -1,7 +1,7 @@
 import store from '../store';
 import config from '../config';
 import TTS from '../utils/TTSUtils';
-import { getCurrentTrack, refreshSpotifyToken } from '../utils/spotify-tools';
+import Spotify from '../utils/Spotify';
 import { updateSpotifyAccessToken } from '../actions/home';
 
 let previousMessage;
@@ -14,13 +14,13 @@ const trackToText = track =>
   }, from the album ${track.item.album.name}`;
 
 const refreshToken = _refreshToken => {
-  refreshSpotifyToken(_refreshToken, credentials => {
+  Spotify.refreshSpotifyToken(_refreshToken, credentials => {
     store.dispatch(updateSpotifyAccessToken(credentials));
   });
 };
 
 const nextMessage = async (accessToken, _refreshToken) => {
-  const track = await getCurrentTrack(accessToken);
+  const track = await Spotify.getCurrentTrack(accessToken);
   if (track.error && track.error.message.indexOf('token') > -1) {
     refreshToken(_refreshToken);
     // TODO: throw Error('The access token was not valid');

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { ipcRenderer } from 'electron';
 import styles from './Home.css';
-import { getSpotifyCredentials } from '../utils/spotify-tools';
+import Spotify from '../utils/Spotify';
 import TTSUtils from '../utils/TTSUtils';
 
 type Props = {
@@ -28,7 +28,7 @@ export default class Home extends Component<Props> {
             "So that the virtual radio speaker knows what you're listening to, you first need to connect the app to your Spotify account."
           }
           <button
-            onClick={() => getSpotifyCredentials(setSpotifyCredentials)}
+            onClick={() => Spotify.getSpotifyCredentials(setSpotifyCredentials)}
             type="button"
           >
             Connect now

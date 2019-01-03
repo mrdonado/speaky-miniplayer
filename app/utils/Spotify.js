@@ -1,7 +1,7 @@
 import { remote } from 'electron';
 import config from '../config';
 
-export const getSpotifyCredentials = setSpotifyCredentials => {
+const getSpotifyCredentials = setSpotifyCredentials => {
   const cb = authCode => {
     const body = new URLSearchParams();
 
@@ -25,7 +25,7 @@ export const getSpotifyCredentials = setSpotifyCredentials => {
   getAuthCode(cb);
 };
 
-export const getCurrentTrack = accessToken =>
+const getCurrentTrack = accessToken =>
   fetch('https://api.spotify.com/v1/me/player/currently-playing', {
     method: 'GET',
     headers: { Authorization: `Bearer ${accessToken}` }
@@ -73,7 +73,7 @@ const getAuthCode = cb => {
   );
 };
 
-export const refreshSpotifyToken = (token, cb) => {
+const refreshSpotifyToken = (token, cb) => {
   const body = new URLSearchParams();
 
   body.append('grant_type', 'refresh_token');
@@ -91,4 +91,10 @@ export const refreshSpotifyToken = (token, cb) => {
     .then(res => res.json())
     .then(cb)
     .catch(console.log);
+};
+
+export default {
+  getSpotifyCredentials,
+  getCurrentTrack,
+  refreshSpotifyToken
 };
