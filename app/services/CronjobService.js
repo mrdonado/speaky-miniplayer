@@ -24,9 +24,6 @@ const refreshAccessToken = refreshToken => {
 
 const nextMessage = async accessToken => {
   const track = await Spotify.getCurrentTrack(accessToken);
-  if (track.error) {
-    throw Error(track.error.message);
-  }
   store.dispatch(updateCurrentTrack(track));
   return trackToText(track);
 };

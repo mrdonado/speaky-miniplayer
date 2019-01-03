@@ -54,7 +54,12 @@ const getCurrentTrack = accessToken =>
     headers: { Authorization: `Bearer ${accessToken}` }
   })
     .then(res => res.json())
-    .then(spotifyTrackToGenericMap);
+    .then(track => {
+      if (track.error) {
+        return Promise.reject(track.error);
+      }
+      return spotifyTrackToGenericMap(track);
+    });
 
 /**
  * This is a private (not exported) function.
