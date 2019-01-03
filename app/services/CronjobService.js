@@ -1,3 +1,4 @@
+import notifier from 'node-notifier';
 import store from '../store';
 import config from '../config';
 import TTS from '../utils/TTSUtils';
@@ -50,6 +51,11 @@ const cronjobTasks = async () => {
     return;
   }
   if (message !== previousMessage) {
+    notifier.notify({
+      title: 'Virtual Radio Speaker',
+      message,
+      icon: false
+    });
     TTS.saySomething(message);
     previousMessage = message;
   }
