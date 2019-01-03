@@ -41,7 +41,8 @@ const spotifyTrackToGenericMap = track => ({
   title: track.item.name,
   album: track.item.album.name,
   artist: track.item.artists[0].name,
-  coverArt: track.item.album.images[0].url
+  coverArt: track.item.album.images[0].url,
+  playing: track.is_playing
 });
 
 /**
