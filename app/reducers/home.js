@@ -5,7 +5,7 @@ import {
 } from '../actions/home';
 import type { Action } from './types';
 
-const initialState = { credentials: {} };
+const initialState = { credentials: {}, currentService: 'spotify' };
 
 const updateOneKey = (oldObject, key, value) => {
   const newObject = Object.assign({}, oldObject);

@@ -2,7 +2,8 @@ import type { Dispatch as ReduxDispatch, Store as ReduxStore } from 'redux';
 
 export type homeStateType = {
   +counter: number,
-  +credentials: object
+  +credentials: object,
+  +currentService: string
 };
 
 export type Action = {

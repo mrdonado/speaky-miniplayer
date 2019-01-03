@@ -13,32 +13,40 @@ const trackToText = track =>
     track.item.artists[0].name
   }, from the album ${track.item.album.name}`;
 
-const refreshToken = _refreshToken => {
-  Spotify.refreshToken(_refreshToken, credentials => {
+const refreshAccessToken = refreshToken => {
+  Spotify.refreshToken(refreshToken, credentials => {
     store.dispatch(updateSpotifyAccessToken(credentials));
   });
 };
 
-const nextMessage = async (accessToken, _refreshToken) => {
+const nextMessage = async accessToken => {
   const track = await Spotify.getCurrentTrack(accessToken);
-  if (track.error && track.error.message.indexOf('token') > -1) {
-    refreshToken(_refreshToken);
-    // TODO: throw Error('The access token was not valid');
-    return previousMessage;
+  if (track.error) {
+    throw Error(track.error);
   }
   return trackToText(track);
 };
 
 const cronjobTasks = async () => {
   const state = store.getState();
-  if (!state.home.credentials || !state.home.credentials.spotify) {
+  // The current service is for now only 'spotify'
+  const { currentService } = state.home;
+  if (!state.home.credentials || !state.home.credentials[currentService]) {
     console.log('No update will be performed until the app is authorized.');
     return;
   }
-  const message = await nextMessage(
-    state.home.credentials.spotify.access_token,
-    state.home.credentials.spotify.refresh_token
-  );
+  const credentials = state.home.credentials[currentService];
+  let message;
+  try {
+    message = await nextMessage(
+      credentials.access_token,
+      credentials.refresh_token
+    );
+  } catch (e) {
+    // TODO errorHandler(e);
+    refreshAccessToken(credentials.refresh_token);
+    return;
+  }
   if (message !== previousMessage) {
     TTS.saySomething(message);
     previousMessage = message;
