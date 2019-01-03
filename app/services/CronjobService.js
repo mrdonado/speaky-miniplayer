@@ -22,7 +22,7 @@ const refreshAccessToken = refreshToken => {
 const nextMessage = async accessToken => {
   const track = await Spotify.getCurrentTrack(accessToken);
   if (track.error) {
-    throw Error(track.error);
+    throw Error(track.error.message);
   }
   return trackToText(track);
 };
@@ -38,13 +38,11 @@ const cronjobTasks = async () => {
   const credentials = state.home.credentials[currentService];
   let message;
   try {
-    message = await nextMessage(
-      credentials.access_token,
-      credentials.refresh_token
-    );
+    message = await nextMessage(credentials.access_token);
   } catch (e) {
-    // TODO errorHandler(e);
-    refreshAccessToken(credentials.refresh_token);
+    if (e.message.indexOf('token') > -1) {
+      refreshAccessToken(credentials.refresh_token);
+    }
     return;
   }
   if (message !== previousMessage) {
