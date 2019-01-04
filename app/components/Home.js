@@ -3,16 +3,11 @@ import React, { Component } from 'react';
 import { ipcRenderer } from 'electron';
 import styles from './Home.css';
 import Spotify from '../utils/Spotify';
-import TTSUtils from '../utils/TTSUtils';
+import player from '../utils/player';
 
 type Props = {
   home: object,
   setCredentials: () => void
-};
-
-const callUpdateService = () => {
-  // former tellMeNow(home.credentials.spotify.access_token)
-  console.log('TODO!');
 };
 
 export default class Home extends Component<Props> {
@@ -47,14 +42,23 @@ export default class Home extends Component<Props> {
         className={styles.container}
         style={{ backgroundImage: `url(${home.currentTrack.coverArt})` }}
       >
-        <button
-          onClick={() => TTSUtils.saySomething('I still work!!!')}
-          type="button"
-        >
-          Try out the synth speech!
+        <button onClick={() => player.play(home)} type="button">
+          Play
         </button>
 
-        <button onClick={callUpdateService} type="button">
+        <button onClick={() => player.pause(home)} type="button">
+          Pause
+        </button>
+
+        <button onClick={() => player.previous(home)} type="button">
+          Previous
+        </button>
+
+        <button onClick={() => player.next(home)} type="button">
+          Next
+        </button>
+
+        <button onClick={() => player.triggerNotification(home)} type="button">
           Inform me now!
         </button>
 

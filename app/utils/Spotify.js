@@ -62,6 +62,42 @@ const getCurrentTrack = accessToken =>
     });
 
 /**
+ * It starts/resumes the user's playback
+ */
+const play = accessToken =>
+  fetch('https://api.spotify.com/v1/me/player/play', {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+/**
+ * It starts/resumes the user's playback
+ */
+const pause = accessToken =>
+  fetch('https://api.spotify.com/v1/me/player/pause', {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+/**
+ * It starts/resumes the user's playback
+ */
+const previous = accessToken =>
+  fetch('https://api.spotify.com/v1/me/player/previous', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+/**
+ * It starts/resumes the user's playback
+ */
+const next = accessToken =>
+  fetch('https://api.spotify.com/v1/me/player/next', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+/**
  * This is a private (not exported) function.
  *
  * `getAuthCode` is the same function as `getAuthCodeCb` but instead of
@@ -145,5 +181,9 @@ const refreshToken = token => {
 export default {
   getCredentials,
   getCurrentTrack,
-  refreshToken
+  refreshToken,
+  play,
+  pause,
+  previous,
+  next
 };

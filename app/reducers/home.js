@@ -11,7 +11,11 @@ const initialState = {
   credentials: {},
   currentService: 'spotify',
   currentTrack: {},
-  lastMessage: ''
+  lastMessage: '',
+  preferences: {
+    TTS: true,
+    notifications: true
+  }
 };
 
 export default function home(state = initialState, action: Action) {

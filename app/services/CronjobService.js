@@ -1,8 +1,7 @@
-import notifier from 'node-notifier';
 import store from '../store';
 import config from '../config';
-import TTS from '../utils/TTSUtils';
 import Spotify from '../utils/Spotify';
+import player from '../utils/player';
 import {
   updateAccessToken,
   updateCurrentTrack,
@@ -51,13 +50,8 @@ const cronjobTasks = async () => {
     return;
   }
   if (message !== lastMessage) {
-    notifier.notify({
-      title: 'Virtual Radio Speaker',
-      message,
-      icon: false
-    });
-    TTS.saySomething(message);
     store.dispatch(updateLastMessage(message));
+    player.triggerNotification(state.home);
   }
 };
 
