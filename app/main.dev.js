@@ -78,8 +78,20 @@ app.on('ready', async () => {
     resizable: false,
     width: 250,
     height: 250,
+    titleBarStyle: 'hiddenInset',
+    frame: false,
+    maximizable: false,
     fullscreenable: false,
-    titleBarStyle: 'hiddenInset'
+    enableLargerThanScreen: false,
+    customButtonsOnHover: true
+  });
+
+  // Force 1/1 aspect ratio on resize
+  mainWindow.on('resize', () => {
+    setTimeout(() => {
+      const size = mainWindow.getSize();
+      mainWindow.setSize(size[0], size[0]);
+    }, 0);
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
