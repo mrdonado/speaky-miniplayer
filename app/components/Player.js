@@ -1,13 +1,16 @@
 // @flow
 import React, { Component } from 'react';
-import { ipcRenderer } from 'electron';
 import styles from './Player.css';
 import Spotify from '../utils/Spotify';
-import playerUtils from '../utils/playerUtils';
 
 type Props = {
   player: object,
   next: () => void,
+  previous: () => void,
+  play: () => void,
+  pause: () => void,
+  swapAlwaysOnTop: () => void,
+  triggerNotification: () => void,
   setCredentials: () => void
 };
 
@@ -15,10 +18,21 @@ export default class Player extends Component<Props> {
   props: Props;
 
   render() {
-    const { player, setCredentials, next } = this.props;
+    const {
+      player,
+      setCredentials,
+      triggerNotification,
+      swapAlwaysOnTop,
+      next,
+      previous,
+      play,
+      pause
+    } = this.props;
+
     const isAuthorized =
       !!player.credentials.spotify &&
       !!player.credentials.spotify.refresh_token;
+
     if (!isAuthorized) {
       return (
         <div>
@@ -44,15 +58,15 @@ export default class Player extends Component<Props> {
         className={styles.container}
         style={{ backgroundImage: `url(${player.currentTrack.coverArt})` }}
       >
-        <button onClick={() => playerUtils.play(player)} type="button">
+        <button onClick={play} type="button">
           Play
         </button>
 
-        <button onClick={() => playerUtils.pause(player)} type="button">
+        <button onClick={pause} type="button">
           Pause
         </button>
 
-        <button onClick={() => playerUtils.previous(player)} type="button">
+        <button onClick={previous} type="button">
           Previous
         </button>
 
@@ -60,17 +74,11 @@ export default class Player extends Component<Props> {
           Next
         </button>
 
-        <button
-          onClick={() => playerUtils.triggerNotification(player)}
-          type="button"
-        >
+        <button onClick={triggerNotification} type="button">
           Inform me now!
         </button>
 
-        <button
-          type="button"
-          onClick={() => ipcRenderer.send('swap-always-on-top')}
-        >
+        <button type="button" onClick={swapAlwaysOnTop}>
           Swap always on top
         </button>
       </div>

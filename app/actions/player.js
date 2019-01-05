@@ -1,9 +1,15 @@
+import { ipcRenderer } from 'electron';
+
 import playerUtils from '../utils/playerUtils';
 
 export const SET_CREDENTIALS = 'SET_CREDENTIALS';
 export const UPDATE_ACCESS_TOKEN = 'UPDATE_ACCESS_TOKEN';
 export const UPDATE_CURRENT_TRACK = 'UPDATE_CURRENT_TRACK';
 export const UPDATE_LAST_MESSAGE = 'UPDATE_LAST_MESSAGE';
+
+// When an API has been called, a small amount of time will be
+// required until the next API call has the latest information.
+const DEBOUNCE_TIME = 200;
 
 export const updateLastMessage = lastMessage => ({
   lastMessage,
@@ -49,6 +55,7 @@ export const errorHandler = e => (dispatch, getState) => {
       .then(credentials => dispatch(updateAccessToken(credentials)))
       .catch(console.log);
   } else {
+    // Unknown error
     console.warn(e);
   }
 };
@@ -61,10 +68,21 @@ export const getCurrentTrack = () => (dispatch, getState) => {
     .catch(e => dispatch(errorHandler(e)));
 };
 
-export const next = () => (dispatch, getState) => {
+export const playerAction = action => (dispatch, getState) => {
   const { player } = getState();
-  playerUtils
-    .next(player)
-    .then(() => setTimeout(() => dispatch(getCurrentTrack()), 200))
+  playerUtils[action](player)
+    .then(() => setTimeout(() => dispatch(getCurrentTrack()), DEBOUNCE_TIME))
     .catch(e => dispatch(errorHandler(e)));
+};
+
+export const next = () => playerAction('next');
+export const previous = () => playerAction('previous');
+export const play = () => playerAction('play');
+export const pause = () => playerAction('pause');
+
+export const swapAlwaysOnTop = () => ipcRenderer.send('swap-always-on-top');
+
+export const triggerNotification = () => (dispatch, getState) => {
+  const { player } = getState();
+  playerUtils.triggerNotification(player);
 };
