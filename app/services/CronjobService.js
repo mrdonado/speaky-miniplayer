@@ -5,11 +5,11 @@ import { getCurrentTrack } from '../actions/player';
 let cronjobId;
 
 const isAppAuthorized = state => {
-  const { currentService } = state.player;
+  const { currentService, credentials } = state.player;
   return (
-    state.player.credentials &&
-    state.player.credentials[currentService] &&
-    state.player.credentials[currentService].refresh_token
+    credentials &&
+    credentials[currentService] &&
+    credentials[currentService].refresh_token
   );
 };
 
