@@ -1,22 +1,23 @@
 // @flow
 import React, { Component } from 'react';
 import { ipcRenderer } from 'electron';
-import styles from './Home.css';
+import styles from './Player.css';
 import Spotify from '../utils/Spotify';
-import player from '../utils/player';
+import playerUtils from '../utils/player';
 
 type Props = {
-  home: object,
+  player: object,
   setCredentials: () => void
 };
 
-export default class Home extends Component<Props> {
+export default class Player extends Component<Props> {
   props: Props;
 
   render() {
-    const { home, setCredentials } = this.props;
+    const { player, setCredentials } = this.props;
     const isAuthorized =
-      !!home.credentials.spotify && !!home.credentials.spotify.refresh_token;
+      !!player.credentials.spotify &&
+      !!player.credentials.spotify.refresh_token;
     if (!isAuthorized) {
       return (
         <div>
@@ -40,25 +41,28 @@ export default class Home extends Component<Props> {
       <div
         data-tid="container"
         className={styles.container}
-        style={{ backgroundImage: `url(${home.currentTrack.coverArt})` }}
+        style={{ backgroundImage: `url(${player.currentTrack.coverArt})` }}
       >
-        <button onClick={() => player.play(home)} type="button">
+        <button onClick={() => playerUtils.play(player)} type="button">
           Play
         </button>
 
-        <button onClick={() => player.pause(home)} type="button">
+        <button onClick={() => playerUtils.pause(player)} type="button">
           Pause
         </button>
 
-        <button onClick={() => player.previous(home)} type="button">
+        <button onClick={() => playerUtils.previous(player)} type="button">
           Previous
         </button>
 
-        <button onClick={() => player.next(home)} type="button">
+        <button onClick={() => playerUtils.next(player)} type="button">
           Next
         </button>
 
-        <button onClick={() => player.triggerNotification(home)} type="button">
+        <button
+          onClick={() => playerUtils.triggerNotification(player)}
+          type="button"
+        >
           Inform me now!
         </button>
 

@@ -5,14 +5,14 @@ import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
 import createRootReducer from '../reducers';
 import * as counterActions from '../actions/counter';
-import * as homeActions from '../actions/home';
-import type { homeStateType } from '../reducers/types';
+import * as playerActions from '../actions/player';
+import type { playerStateType } from '../reducers/types';
 
 const history = createHashHistory();
 
 const rootReducer = createRootReducer(history);
 
-const configureStore = (initialState?: homeStateType) => {
+const configureStore = (initialState?: playerStateType) => {
   // Redux Configuration
   const middleware = [];
   const enhancers = [];
@@ -38,7 +38,7 @@ const configureStore = (initialState?: homeStateType) => {
   // Redux DevTools Configuration
   const actionCreators = {
     ...counterActions,
-    ...homeActions,
+    ...playerActions,
     ...routerActions
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose

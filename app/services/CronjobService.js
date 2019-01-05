@@ -6,7 +6,7 @@ import {
   updateAccessToken,
   updateCurrentTrack,
   updateLastMessage
-} from '../actions/home';
+} from '../actions/player';
 
 let cronjobId;
 
@@ -30,16 +30,16 @@ const nextMessage = async accessToken => {
 const cronjobTasks = async () => {
   const state = store.getState();
   // The current service is for now only 'spotify'
-  const { currentService, lastMessage } = state.home;
+  const { currentService, lastMessage } = state.player;
   if (
-    !state.home.credentials ||
-    !state.home.credentials[currentService] ||
-    !state.home.credentials[currentService].refresh_token
+    !state.player.credentials ||
+    !state.player.credentials[currentService] ||
+    !state.player.credentials[currentService].refresh_token
   ) {
     console.log('No update will be performed until the app is authorized.');
     return;
   }
-  const credentials = state.home.credentials[currentService];
+  const credentials = state.player.credentials[currentService];
   let message;
   try {
     message = await nextMessage(credentials.access_token);
@@ -51,7 +51,7 @@ const cronjobTasks = async () => {
   }
   if (message !== lastMessage) {
     store.dispatch(updateLastMessage(message));
-    player.triggerNotification(state.home);
+    player.triggerNotification(store.getState().player);
   }
 };
 

@@ -4,7 +4,7 @@ import {
   UPDATE_ACCESS_TOKEN,
   UPDATE_CURRENT_TRACK,
   UPDATE_LAST_MESSAGE
-} from '../actions/home';
+} from '../actions/player';
 import type { Action } from './types';
 
 const initialState = {
@@ -18,7 +18,7 @@ const initialState = {
   }
 };
 
-export default function home(state = initialState, action: Action) {
+export default function player(state = initialState, action: Action) {
   const { musicService } = action;
   let credentials = {};
 

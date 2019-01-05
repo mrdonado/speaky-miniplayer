@@ -1,16 +1,19 @@
 import type { Dispatch as ReduxDispatch, Store as ReduxStore } from 'redux';
 
-export type homeStateType = {
+export type playerStateType = {
   +counter: number,
   +credentials: object,
-  +currentService: string
+  +currentService: string,
+  +currentTrack: object,
+  +lastMessage: string,
+  +preferences: object
 };
 
 export type Action = {
   +type: string
 };
 
-export type GetState = () => homeStateType;
+export type GetState = () => playerStateType;
 
 export type Dispatch = ReduxDispatch<Action>;
 

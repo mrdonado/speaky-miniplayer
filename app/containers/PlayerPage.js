@@ -1,20 +1,20 @@
 // @flow
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Home from '../components/Home';
-import * as HomeActions from '../actions/home';
+import Player from '../components/Player';
+import * as PlayerActions from '../actions/player';
 
 function mapStateToProps(state) {
   return {
-    home: state.home
+    player: state.player
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(HomeActions, dispatch);
+  return bindActionCreators(PlayerActions, dispatch);
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Home);
+)(Player);
