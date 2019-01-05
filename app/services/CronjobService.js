@@ -1,7 +1,7 @@
 import store from '../store';
 import config from '../config';
 import Spotify from '../utils/Spotify';
-import player from '../utils/player';
+import playerUtils from '../utils/playerUtils';
 import {
   updateAccessToken,
   updateCurrentTrack,
@@ -51,7 +51,7 @@ const cronjobTasks = async () => {
   }
   if (message !== lastMessage) {
     store.dispatch(updateLastMessage(message));
-    player.triggerNotification(store.getState().player);
+    playerUtils.triggerNotification(store.getState().player);
   }
 };
 

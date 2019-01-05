@@ -3,10 +3,11 @@ import React, { Component } from 'react';
 import { ipcRenderer } from 'electron';
 import styles from './Player.css';
 import Spotify from '../utils/Spotify';
-import playerUtils from '../utils/player';
+import playerUtils from '../utils/playerUtils';
 
 type Props = {
   player: object,
+  next: () => void,
   setCredentials: () => void
 };
 
@@ -14,7 +15,7 @@ export default class Player extends Component<Props> {
   props: Props;
 
   render() {
-    const { player, setCredentials } = this.props;
+    const { player, setCredentials, next } = this.props;
     const isAuthorized =
       !!player.credentials.spotify &&
       !!player.credentials.spotify.refresh_token;
@@ -55,7 +56,7 @@ export default class Player extends Component<Props> {
           Previous
         </button>
 
-        <button onClick={() => playerUtils.next(player)} type="button">
+        <button onClick={next} type="button">
           Next
         </button>
 

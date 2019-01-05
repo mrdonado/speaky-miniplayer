@@ -1,5 +1,6 @@
 // @flow
-// import type { GetState, Dispatch } from '../reducers/types';
+import type { GetState, Dispatch } from '../reducers/types';
+import playerUtils from '../utils/playerUtils';
 
 export const SET_CREDENTIALS = 'SET_CREDENTIALS';
 export const UPDATE_ACCESS_TOKEN = 'UPDATE_ACCESS_TOKEN';
@@ -33,5 +34,15 @@ export function updateAccessToken(credentials, musicService = 'spotify') {
     musicService,
     type: UPDATE_ACCESS_TOKEN,
     access_token: credentials.access_token
+  };
+}
+
+export function next() {
+  return (dispatch: Dispatch, getState: GetState) => {
+    const { player } = getState();
+
+    playerUtils.next(player);
+
+    // dispatch(increment());
   };
 }
