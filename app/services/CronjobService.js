@@ -1,58 +1,26 @@
 import store from '../store';
 import config from '../config';
-import Spotify from '../utils/Spotify';
-import playerUtils from '../utils/playerUtils';
-import {
-  updateAccessToken,
-  updateCurrentTrack,
-  updateLastMessage
-} from '../actions/player';
+import { getCurrentTrack } from '../actions/player';
 
 let cronjobId;
 
-const trackToText = track =>
-  `You're listening to ${track.title}, by ${track.artist}, from the album ${
-    track.album
-  }`;
-
-const refreshAccessToken = refreshToken => {
-  Spotify.refreshToken(refreshToken)
-    .then(credentials => store.dispatch(updateAccessToken(credentials)))
-    .catch(console.log);
-};
-
-const nextMessage = async accessToken => {
-  const track = await Spotify.getCurrentTrack(accessToken);
-  store.dispatch(updateCurrentTrack(track));
-  return trackToText(track);
+const isAppAuthorized = state => {
+  const { currentService } = state.player;
+  return (
+    state.player.credentials &&
+    state.player.credentials[currentService] &&
+    state.player.credentials[currentService].refresh_token
+  );
 };
 
 const cronjobTasks = async () => {
   const state = store.getState();
-  // The current service is for now only 'spotify'
-  const { currentService, lastMessage } = state.player;
-  if (
-    !state.player.credentials ||
-    !state.player.credentials[currentService] ||
-    !state.player.credentials[currentService].refresh_token
-  ) {
+  if (!isAppAuthorized(state)) {
     console.log('No update will be performed until the app is authorized.');
     return;
   }
-  const credentials = state.player.credentials[currentService];
-  let message;
-  try {
-    message = await nextMessage(credentials.access_token);
-  } catch (e) {
-    if (e.message.indexOf('token') > -1) {
-      refreshAccessToken(credentials.refresh_token);
-    }
-    return;
-  }
-  if (message !== lastMessage) {
-    store.dispatch(updateLastMessage(message));
-    playerUtils.triggerNotification(store.getState().player);
-  }
+  // 1st task: dispatch getCurrentTrack
+  store.dispatch(getCurrentTrack());
 };
 
 const start = () => {
