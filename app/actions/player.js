@@ -80,7 +80,8 @@ export const previous = () => playerAction('previous');
 export const play = () => playerAction('play');
 export const pause = () => playerAction('pause');
 
-export const swapAlwaysOnTop = () => ipcRenderer.send('swap-always-on-top');
+export const swapAlwaysOnTop = () => () =>
+  ipcRenderer.send('swap-always-on-top');
 
 export const triggerNotification = () => (dispatch, getState) => {
   const { player } = getState();
