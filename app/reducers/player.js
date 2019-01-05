@@ -10,7 +10,13 @@ import type { Action } from './types';
 const initialState = {
   credentials: {},
   currentService: 'spotify',
-  currentTrack: {},
+  currentTrack: {
+    title: '',
+    album: '',
+    artist: '',
+    coverArt: '',
+    playing: false
+  },
   lastMessage: '',
   preferences: {
     TTS: true,

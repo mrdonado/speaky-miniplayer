@@ -9,7 +9,7 @@ export const UPDATE_LAST_MESSAGE = 'UPDATE_LAST_MESSAGE';
 
 // When an API has been called, a small amount of time will be
 // required until the next API call has the latest information.
-const DEBOUNCE_TIME = 200;
+const DEBOUNCE_TIME = 100;
 
 export const updateLastMessage = lastMessage => ({
   lastMessage,

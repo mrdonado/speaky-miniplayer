@@ -1,4 +1,5 @@
 // @flow
+import FontAwesome from 'react-fontawesome';
 import React, { Component } from 'react';
 import styles from './Player.css';
 import Spotify from '../utils/Spotify';
@@ -58,28 +59,30 @@ export default class Player extends Component<Props> {
         className={styles.container}
         style={{ backgroundImage: `url(${player.currentTrack.coverArt})` }}
       >
-        <button onClick={play} type="button">
-          Play
-        </button>
-
-        <button onClick={pause} type="button">
-          Pause
-        </button>
+        {player.currentTrack.playing ? (
+          <button onClick={pause} type="button">
+            <FontAwesome name="pause" />
+          </button>
+        ) : (
+          <button onClick={play} type="button">
+            <FontAwesome name="play" />
+          </button>
+        )}
 
         <button onClick={previous} type="button">
-          Previous
+          <FontAwesome name="backward" />
         </button>
 
         <button onClick={next} type="button">
-          Next
+          <FontAwesome name="forward" />
         </button>
 
         <button onClick={triggerNotification} type="button">
-          Inform me now!
+          <FontAwesome name="bell" />
         </button>
 
         <button type="button" onClick={swapAlwaysOnTop}>
-          Swap always on top
+          <FontAwesome name="thumbtack" />
         </button>
       </div>
     );
