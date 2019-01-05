@@ -59,31 +59,36 @@ export default class Player extends Component<Props> {
         className={styles.container}
         style={{ backgroundImage: `url(${player.currentTrack.coverArt})` }}
       >
-        {player.currentTrack.playing ? (
-          <button onClick={pause} type="button">
-            <FontAwesome name="pause" />
+        <div className={styles.overlay}>
+          {player.currentTrack.playing ? (
+            <button onClick={pause} type="button">
+              <FontAwesome name="pause" />
+            </button>
+          ) : (
+            <button onClick={play} type="button">
+              <FontAwesome name="play" />
+            </button>
+          )}
+
+          <button onClick={previous} type="button">
+            <FontAwesome name="backward" />
           </button>
-        ) : (
-          <button onClick={play} type="button">
-            <FontAwesome name="play" />
+
+          <button onClick={next} type="button">
+            <FontAwesome name="forward" />
           </button>
-        )}
 
-        <button onClick={previous} type="button">
-          <FontAwesome name="backward" />
-        </button>
+          <button onClick={triggerNotification} type="button">
+            <FontAwesome name="bell" />
+          </button>
 
-        <button onClick={next} type="button">
-          <FontAwesome name="forward" />
-        </button>
-
-        <button onClick={triggerNotification} type="button">
-          <FontAwesome name="bell" />
-        </button>
-
-        <button type="button" onClick={swapAlwaysOnTop}>
-          <FontAwesome name="thumbtack" />
-        </button>
+          <button type="button" onClick={swapAlwaysOnTop}>
+            <FontAwesome name="thumbtack" />
+          </button>
+          <div>{player.currentTrack.title}</div>
+          <div>{player.currentTrack.artist}</div>
+          <div>{player.currentTrack.album}</div>
+        </div>
       </div>
     );
   }
