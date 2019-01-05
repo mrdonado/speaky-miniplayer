@@ -15,20 +15,21 @@ speechSynthesis.onvoiceschanged = () => {
   voicesReady = true;
 };
 
-const saySomething = (text = '', lang = 'en-US') => {
+const saySomething = (text = '', lang = 'en-AU') => {
   if (!voicesReady) return;
   const message = new SpeechSynthesisUtterance();
   message.onerror = errorCallback;
-  const voice =
-    speechSynthesis.getVoices().filter(it => it.lang === lang)[2] || 'native';
+  const voices = speechSynthesis.getVoices().filter(it => it.lang === lang);
   // Apparently some characters make the TTS engine crash,
   // so we'll replace them now
   message.text = text.replace(/([\d]{4})[-\s]*([\d]{4})/g, "$1' $2'");
   message.text = message.text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  message.voice = voice;
+  message.text = message.text.replace(/[-()[]]*/g, '');
+  message.text = message.text.replace(/[\s]{2}/g, ' ');
+  [message.voice] = voices;
   message.volume = 1;
-  message.rate = 0;
-  message.pitch = 0;
+  // message.rate = 1;
+  // message.pitch = 1;
   speechSynthesis.speak(message);
 };
 
