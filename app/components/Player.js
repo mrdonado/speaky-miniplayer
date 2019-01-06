@@ -1,3 +1,4 @@
+/* eslint react/destructuring-assignment: "off" */
 // @flow
 import FontAwesome from 'react-fontawesome';
 import React, { Component } from 'react';
@@ -15,8 +16,42 @@ type Props = {
   setCredentials: () => void
 };
 
+let timerId;
+const CONFIG_TIMEOUT = 5000;
+
 export default class Player extends Component<Props> {
   props: Props;
+
+  constructor(props) {
+    super(props);
+    this.configSwapper = this.configSwapper.bind(this);
+    this.state = {
+      showConfig: false
+    };
+  }
+
+  /**
+   * It shows or hides the configuration, when `value` is a boolean.
+   * When `value` is different from a boolean, it will swap the
+   * `showConfig` value.
+   *
+   * When the config has been set to be shown (`value = true`), a
+   * timer is configured to automatically go back to the main view.
+   */
+  configSwapper(value) {
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+    const wasActive = this.state.showConfig;
+    if (typeof value === 'boolean') {
+      this.setState({ showConfig: value });
+    } else {
+      this.setState({ showConfig: !wasActive });
+    }
+    if (!wasActive || value === true) {
+      timerId = setTimeout(() => this.configSwapper(false), CONFIG_TIMEOUT);
+    }
+  }
 
   render() {
     const {
@@ -60,34 +95,51 @@ export default class Player extends Component<Props> {
         style={{ backgroundImage: `url(${player.currentTrack.coverArt})` }}
       >
         <div className={styles.overlay}>
-          {player.currentTrack.playing ? (
-            <button onClick={pause} type="button">
-              <FontAwesome name="pause" />
-            </button>
-          ) : (
-            <button onClick={play} type="button">
-              <FontAwesome name="play" />
-            </button>
+          {this.state.showConfig && (
+            <div className="configuration">
+              <button onClick={triggerNotification} type="button">
+                <FontAwesome name="bell" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  this.configSwapper(true);
+                  swapAlwaysOnTop();
+                }}
+              >
+                <FontAwesome name="thumbtack" />
+              </button>
+            </div>
           )}
+          {!this.state.showConfig && (
+            <div className="player">
+              <button onClick={previous} type="button">
+                <FontAwesome name="backward" />
+              </button>
 
-          <button onClick={previous} type="button">
-            <FontAwesome name="backward" />
-          </button>
+              {player.currentTrack.playing ? (
+                <button onClick={pause} type="button">
+                  <FontAwesome name="pause" />
+                </button>
+              ) : (
+                <button onClick={play} type="button">
+                  <FontAwesome name="play" />
+                </button>
+              )}
 
-          <button onClick={next} type="button">
-            <FontAwesome name="forward" />
-          </button>
+              <button onClick={next} type="button">
+                <FontAwesome name="forward" />
+              </button>
 
-          <button onClick={triggerNotification} type="button">
-            <FontAwesome name="bell" />
+              <div>{player.currentTrack.title}</div>
+              <div>{player.currentTrack.album}</div>
+              <div>{player.currentTrack.artist}</div>
+            </div>
+          )}
+          <button onClick={this.configSwapper} type="button">
+            <FontAwesome name="cog" />
           </button>
-
-          <button type="button" onClick={swapAlwaysOnTop}>
-            <FontAwesome name="thumbtack" />
-          </button>
-          <div>{player.currentTrack.title}</div>
-          <div>{player.currentTrack.artist}</div>
-          <div>{player.currentTrack.album}</div>
         </div>
       </div>
     );
