@@ -112,7 +112,12 @@ app.on('ready', async () => {
 
   mainWindow.on('closed', () => {
     mainWindow = null;
+    app.quit();
   });
+
+  mainWindow.setAlwaysOnTop(true, 'floating');
+  mainWindow.setVisibleOnAllWorkspaces(true);
+  mainWindow.setFullScreenable(false);
 
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();

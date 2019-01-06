@@ -1,6 +1,6 @@
 import store from '../store';
 import config from '../config';
-import { getCurrentTrack } from '../actions/player';
+import { getCurrentTrack, swapAlwaysOnTop } from '../actions/player';
 
 let cronjobId;
 
@@ -24,6 +24,12 @@ const cronjobTasks = async () => {
 };
 
 const start = () => {
+  const state = store.getState();
+
+  if (state.player.preferences.alwaysOnTop) {
+    store.dispatch(swapAlwaysOnTop());
+  }
+
   cronjobId = setInterval(cronjobTasks, config.updateInterval);
 };
 
