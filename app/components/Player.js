@@ -71,20 +71,24 @@ export default class Player extends Component<Props> {
 
     if (!isAuthorized) {
       return (
-        <div>
-          {
-            "So that the virtual radio speaker knows what you're listening to, you first need to connect the app to your Spotify account."
-          }
-          <button
-            onClick={() =>
-              Spotify.getCredentials().then(credentials =>
-                setCredentials(credentials, 'spotify')
-              )
-            }
-            type="button"
-          >
-            Connect now
-          </button>
+        <div className={styles.container}>
+          <div className={styles.loginView}>
+            <div className={styles.loginText}>
+              {
+                'Speaky MiniPlayer needs a connection to a streaming music service.'
+              }
+            </div>
+            <button
+              onClick={() =>
+                Spotify.getCredentials().then(credentials =>
+                  setCredentials(credentials, 'spotify')
+                )
+              }
+              type="button"
+            >
+              Connect to Spotify
+            </button>
+          </div>
         </div>
       );
     }

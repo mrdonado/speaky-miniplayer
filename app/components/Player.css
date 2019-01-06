@@ -1,4 +1,10 @@
+@font-face {
+  font-family: 'raleway-light';
+  src: url('/resources/fonts/Raleway-Light.ttf');
+}
+
 .container {
+  font-family: 'raleway-light', 'Arial Narrow', Arial, sans-serif;
   position: absolute;
   top: 0;
   -webkit-user-select: none;
@@ -11,6 +17,32 @@
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.loginView {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  text-align: center;
+  line-height: 25px;
+  margin: auto;
+  width: 90%;
+  height: 90%;
+}
+
+.loginText {
+  padding-top: 13vh;
+}
+
+.loginView button {
+  font-family: 'raleway-light', 'Arial Narrow', Arial, sans-serif;
+  border: none;
+  color: white;
+  background-color: #1db954;
+  font-size: 1rem;
+  border-radius: 10px;
+  padding: 5px;
 }
 
 .overlay {
