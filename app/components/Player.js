@@ -96,13 +96,20 @@ export default class Player extends Component<Props> {
       >
         <div className={styles.overlay}>
           {this.state.showConfig && (
-            <div className="configuration">
-              <button onClick={triggerNotification} type="button">
-                <FontAwesome name="bell" />
+            <div className={styles.configuration}>
+              <button
+                onClick={triggerNotification}
+                className={`${styles.configButton} ${player.preferences.TTS &&
+                  styles.active}`}
+                type="button"
+              >
+                <FontAwesome name="microphone" />
               </button>
 
               <button
                 type="button"
+                className={`${styles.configButton} ${player.preferences
+                  .alwaysOnTop && styles.active}`}
                 onClick={() => {
                   this.configSwapper(true);
                   swapAlwaysOnTop();
@@ -110,10 +117,22 @@ export default class Player extends Component<Props> {
               >
                 <FontAwesome name="thumbtack" />
               </button>
+
+              <button
+                type="button"
+                className={`${styles.configButton} ${player.preferences
+                  .notifications && styles.active}`}
+                onClick={() => {
+                  this.configSwapper(true);
+                  swapAlwaysOnTop();
+                }}
+              >
+                <FontAwesome name="bell" />
+              </button>
             </div>
           )}
           {!this.state.showConfig && (
-            <div className="player">
+            <div className={styles.player}>
               <button onClick={previous} type="button">
                 <FontAwesome name="backward" />
               </button>
@@ -131,14 +150,16 @@ export default class Player extends Component<Props> {
               <button onClick={next} type="button">
                 <FontAwesome name="forward" />
               </button>
-
-              <div>{player.currentTrack.title}</div>
-              <div>{player.currentTrack.album}</div>
-              <div>{player.currentTrack.artist}</div>
+              <div className={styles.trackInfo}>
+                <div>{player.currentTrack.title}</div>
+                <div>{player.currentTrack.album}</div>
+                <div>{player.currentTrack.artist}</div>
+              </div>
             </div>
           )}
           <button
-            className={styles.configButton}
+            className={`${styles.swapConfigButton} 
+            ${this.state.showConfig && styles.active}`}
             onClick={this.configSwapper}
             type="button"
           >
