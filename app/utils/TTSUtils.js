@@ -28,7 +28,7 @@ const saySomething = (text = '', lang = 'en-AU') => {
   message.text = message.text.replace(/[\s]{2}/g, ' ');
   [message.voice] = voices;
   message.volume = 1;
-  // message.rate = 1;
+  message.rate = 0.85;
   // message.pitch = 1;
   speechSynthesis.speak(message);
 };
