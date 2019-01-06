@@ -137,7 +137,11 @@ export default class Player extends Component<Props> {
               <div>{player.currentTrack.artist}</div>
             </div>
           )}
-          <button onClick={this.configSwapper} type="button">
+          <button
+            className={styles.configButton}
+            onClick={this.configSwapper}
+            type="button"
+          >
             <FontAwesome name="cog" />
           </button>
         </div>
