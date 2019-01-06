@@ -26,8 +26,8 @@ const cronjobTasks = async () => {
 const start = () => {
   const state = store.getState();
 
-  if (state.player.preferences.alwaysOnTop) {
-    store.dispatch(swapAlwaysOnTop());
+  if (!state.player.preferences.alwaysOnTop) {
+    store.dispatch(swapAlwaysOnTop(false));
   }
 
   cronjobId = setInterval(cronjobTasks, config.updateInterval);

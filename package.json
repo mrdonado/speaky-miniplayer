@@ -57,8 +57,8 @@
   },
   "main": "./app/main.prod.js",
   "build": {
-    "productName": "VirtualRadioSpeaker",
-    "appId": "org.fjrd84.VirtualRadioSpeaker",
+    "productName": "Speaky MiniPlayer",
+    "appId": "org.fjrd84.SpeakyMiniPlayer",
     "files": [
       "app/dist/",
       "app/app.html",
@@ -102,13 +102,13 @@
     "publish": {
       "provider": "github",
       "owner": "fjrd84",
-      "repo": "virtual-radio-speaker",
+      "repo": "speaky-miniplayer",
       "private": false
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fjrd84/virtual-radio-speaker.git"
+    "url": "git+https://github.com/fjrd84/speaky-miniplayer.git"
   },
   "author": {
     "name": "F. Javier R. Donado",
@@ -117,22 +117,21 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fjrd84/virtual-radio-speaker/issues"
+    "url": "https://github.com/fjrd84/speaky-miniplayer/issues"
   },
   "keywords": [
     "electron",
     "virtual",
+    "speaky",
+    "tts",
+    "player",
+    "music",
     "radio",
     "speaker",
     "spotify",
     "miniplayer",
     "react",
-    "redux",
-    "flow",
-    "sass",
-    "webpack",
-    "hot",
-    "reload"
+    "redux"
   ],
   "homepage": "https://github.com/fjrd84/virtual-radio-speaker#readme",
   "jest": {

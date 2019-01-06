@@ -1,4 +1,3 @@
-import notifier from 'node-notifier';
 import TTS from './TTSUtils';
 import spotify from './Spotify';
 
@@ -6,13 +5,12 @@ const APIs = { spotify };
 
 const triggerNotification = state => {
   if (state.preferences.notifications) {
-    notifier.notify({
-      title: 'Virtual Radio Speaker',
-      message: state.lastMessage,
-      icon: false,
-      wait: false,
-      timeout: 5
+    const notification = new Notification('Speaky MiniPlayer', {
+      title: 'Speaky MiniPlayer',
+      silent: true,
+      body: state.lastMessage
     });
+    setTimeout(() => notification.close(), 5000);
   }
   if (state.preferences.TTS) {
     TTS.saySomething(state.lastMessage);

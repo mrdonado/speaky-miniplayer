@@ -87,8 +87,11 @@ export const updatePreference = (preference, value) => ({
   type: UPDATE_PREFERENCE
 });
 
-export const swapAlwaysOnTop = () => (dispatch, getState) => {
-  const value = !getState().player.preferences.alwaysOnTop;
+export const swapAlwaysOnTop = _value => (dispatch, getState) => {
+  const value =
+    typeof _value === 'boolean'
+      ? _value
+      : !getState().player.preferences.alwaysOnTop;
   ipcRenderer.send('swap-always-on-top', value);
   dispatch(updatePreference('alwaysOnTop', value));
 };
