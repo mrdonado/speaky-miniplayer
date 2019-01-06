@@ -1,10 +1,10 @@
-# virtual-radio-speaker
+# Speaky MiniPlayer
 
 This [electron](https://electronjs.org/) app adds a virtual radio speaker to your desktop. The virtual speaker provides information about the music being played (such as artist, album, year...) by using a synthetic voice.
 
 The goal is to emulate traditional radio programs where a speaker helps you find new music by providing some context and additional information.
 
-Nowdays it's easy to discover new music by using randomly generated lists, but unless we specifically go and look for information about the music being played, chances are we're not going to remember what has just been played. This mini app tries to help you learn more about the music you listen to and provide some context to it.
+Nowdays it's easy to discover new music by using randomly generated lists, but unless we specifically go and look for information about the music being played, chances are we're not going to remember what has just been played. This mini app tries to help you learn more about the music you listen to while providing some context.
 
 # Installation
 
