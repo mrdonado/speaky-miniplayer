@@ -12,7 +12,7 @@ type Props = {
   play: () => void,
   pause: () => void,
   swapAlwaysOnTop: () => void,
-  triggerNotification: () => void,
+  updatePreference: () => void,
   setCredentials: () => void
 };
 
@@ -24,7 +24,7 @@ export default class Player extends Component<Props> {
 
   constructor(props) {
     super(props);
-    this.configSwapper = this.configSwapper.bind(this);
+    this.swapConfigView = this.swapConfigView.bind(this);
     this.state = {
       showConfig: false
     };
@@ -38,7 +38,7 @@ export default class Player extends Component<Props> {
    * When the config has been set to be shown (`value = true`), a
    * timer is configured to automatically go back to the main view.
    */
-  configSwapper(value) {
+  swapConfigView(value) {
     if (timerId) {
       clearTimeout(timerId);
     }
@@ -49,7 +49,7 @@ export default class Player extends Component<Props> {
       this.setState({ showConfig: !wasActive });
     }
     if (!wasActive || value === true) {
-      timerId = setTimeout(() => this.configSwapper(false), CONFIG_TIMEOUT);
+      timerId = setTimeout(() => this.swapConfigView(false), CONFIG_TIMEOUT);
     }
   }
 
@@ -57,8 +57,8 @@ export default class Player extends Component<Props> {
     const {
       player,
       setCredentials,
-      triggerNotification,
       swapAlwaysOnTop,
+      updatePreference,
       next,
       previous,
       play,
@@ -98,7 +98,10 @@ export default class Player extends Component<Props> {
           {this.state.showConfig && (
             <div className={styles.configuration}>
               <button
-                onClick={triggerNotification}
+                onClick={() => {
+                  this.swapConfigView(true);
+                  updatePreference('TTS', !player.preferences.TTS);
+                }}
                 className={`${styles.configButton} ${player.preferences.TTS &&
                   styles.active}`}
                 type="button"
@@ -111,7 +114,7 @@ export default class Player extends Component<Props> {
                 className={`${styles.configButton} ${player.preferences
                   .alwaysOnTop && styles.active}`}
                 onClick={() => {
-                  this.configSwapper(true);
+                  this.swapConfigView(true);
                   swapAlwaysOnTop();
                 }}
               >
@@ -123,8 +126,10 @@ export default class Player extends Component<Props> {
                 className={`${styles.configButton} ${player.preferences
                   .notifications && styles.active}`}
                 onClick={() => {
-                  this.configSwapper(true);
-                  swapAlwaysOnTop();
+                  updatePreference(
+                    'notifications',
+                    !player.preferences.notifications
+                  );
                 }}
               >
                 <FontAwesome name="bell" />
@@ -160,7 +165,7 @@ export default class Player extends Component<Props> {
           <button
             className={`${styles.swapConfigButton} 
             ${this.state.showConfig && styles.active}`}
-            onClick={this.configSwapper}
+            onClick={this.swapConfigView}
             type="button"
           >
             <FontAwesome name="cog" />

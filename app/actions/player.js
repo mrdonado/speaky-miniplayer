@@ -6,6 +6,7 @@ export const SET_CREDENTIALS = 'SET_CREDENTIALS';
 export const UPDATE_ACCESS_TOKEN = 'UPDATE_ACCESS_TOKEN';
 export const UPDATE_CURRENT_TRACK = 'UPDATE_CURRENT_TRACK';
 export const UPDATE_LAST_MESSAGE = 'UPDATE_LAST_MESSAGE';
+export const UPDATE_PREFERENCE = 'UPDATE_PREFERENCE';
 
 // When an API has been called, a small amount of time will be
 // required until the next API call has the latest information.
@@ -80,8 +81,17 @@ export const previous = () => playerAction('previous');
 export const play = () => playerAction('play');
 export const pause = () => playerAction('pause');
 
-export const swapAlwaysOnTop = () => () =>
-  ipcRenderer.send('swap-always-on-top');
+export const updatePreference = (preference, value) => ({
+  preference,
+  value,
+  type: UPDATE_PREFERENCE
+});
+
+export const swapAlwaysOnTop = () => (dispatch, getState) => {
+  const value = !getState().player.preferences.alwaysOnTop;
+  ipcRenderer.send('swap-always-on-top', value);
+  dispatch(updatePreference('alwaysOnTop', value));
+};
 
 export const triggerNotification = () => (dispatch, getState) => {
   const { player } = getState();

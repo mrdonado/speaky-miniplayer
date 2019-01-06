@@ -3,7 +3,8 @@ import {
   SET_CREDENTIALS,
   UPDATE_ACCESS_TOKEN,
   UPDATE_CURRENT_TRACK,
-  UPDATE_LAST_MESSAGE
+  UPDATE_LAST_MESSAGE,
+  UPDATE_PREFERENCE
 } from '../actions/player';
 import type { Action } from './types';
 
@@ -20,12 +21,14 @@ const initialState = {
   lastMessage: '',
   preferences: {
     TTS: true,
-    notifications: true
+    notifications: true,
+    alwaysOnTop: true
   }
 };
 
 export default function player(state = initialState, action: Action) {
   const { musicService } = action;
+  const { preferences } = state;
   let credentials = {};
 
   switch (action.type) {
@@ -43,6 +46,10 @@ export default function player(state = initialState, action: Action) {
 
     case UPDATE_LAST_MESSAGE:
       return Object.assign({}, state, { lastMessage: action.lastMessage });
+
+    case UPDATE_PREFERENCE:
+      preferences[action.preference] = action.value;
+      return Object.assign({}, state, { preferences });
 
     default:
       return state;

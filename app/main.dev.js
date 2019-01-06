@@ -51,9 +51,9 @@ const installExtensions = async () => {
  * Add event listeners...
  */
 
-ipcMain.on('swap-always-on-top', () => {
+ipcMain.on('swap-always-on-top', (e, value) => {
   if (mainWindow) {
-    mainWindow.setAlwaysOnTop(!mainWindow.isAlwaysOnTop());
+    mainWindow.setAlwaysOnTop(value);
   }
 });
 
