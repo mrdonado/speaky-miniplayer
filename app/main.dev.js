@@ -57,6 +57,8 @@ ipcMain.on('swap-always-on-top', (e, value) => {
   }
 });
 
+app.setAppUserModelId('org.fjrd84.SpeakyMiniPlayer');
+
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
@@ -86,14 +88,6 @@ app.on('ready', async () => {
     customButtonsOnHover: true
   });
 
-  // Force 1/1 aspect ratio on resize
-  mainWindow.on('resize', () => {
-    setTimeout(() => {
-      const size = mainWindow.getSize();
-      mainWindow.setSize(size[0], size[0]);
-    }, 0);
-  });
-
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   // @TODO: Use 'ready-to-show' event
@@ -113,6 +107,10 @@ app.on('ready', async () => {
   mainWindow.on('closed', () => {
     mainWindow = null;
     app.quit();
+  });
+
+  mainWindow.on('resize', () => {
+    mainWindow.setSize(250, 250);
   });
 
   mainWindow.setAlwaysOnTop(true, 'floating');

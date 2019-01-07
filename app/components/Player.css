@@ -20,6 +20,11 @@
   overflow: hidden;
 }
 
+.overlay * {
+  -webkit-app-region: no-drag;
+  -webkit-user-select: none;
+}
+
 .loginView {
   display: flex;
   flex-direction: column;
@@ -101,10 +106,13 @@
 
 .swapConfigButton {
   position: absolute;
-  font-size: 12vw;
   top: 5px;
   right: 5px;
   color: #afafaf;
+}
+
+.overlay .swapConfigButton {
+  font-size: 9vw;
 }
 
 .active {
