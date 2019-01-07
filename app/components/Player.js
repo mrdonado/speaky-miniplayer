@@ -1,7 +1,10 @@
 /* eslint react/destructuring-assignment: "off" */
+/* eslint jsx-a11y/interactive-supports-focus: "off" */
+/* eslint jsx-a11y/click-events-have-key-events: "off" */
 // @flow
 import FontAwesome from 'react-fontawesome';
 import React, { Component } from 'react';
+import { shell } from 'electron';
 import styles from './Player.css';
 import Spotify from '../utils/Spotify';
 
@@ -18,6 +21,33 @@ type Props = {
 
 let timerId;
 const CONFIG_TIMEOUT = 5000;
+
+const showInfo = (info, track) => {
+  const cleanItAndURL = input =>
+    encodeURI(input.split(/[-()[\]]/g)[0].replace(/\s/g, '+'));
+
+  const title = cleanItAndURL(track.title);
+  const artist = cleanItAndURL(track.artist);
+  const album = cleanItAndURL(track.album);
+
+  switch (info) {
+    case 'title':
+      shell.openExternal(
+        `https://search.azlyrics.com/search.php?q=${artist}+${title}`
+      );
+      return;
+    case 'album':
+      shell.openExternal(
+        `https://www.allmusic.com/search/all/${album}+${artist}`
+      );
+      return;
+    case 'artist':
+      shell.openExternal(`https://www.allmusic.com/search/all/${artist}`);
+      return;
+    default:
+      console.warn(`Calling showInfo with ${info}`);
+  }
+};
 
 export default class Player extends Component<Props> {
   props: Props;
@@ -160,9 +190,24 @@ export default class Player extends Component<Props> {
                 <FontAwesome name="forward" />
               </button>
               <div className={styles.trackInfo}>
-                <div>{player.currentTrack.title}</div>
-                <div>{player.currentTrack.album}</div>
-                <div>{player.currentTrack.artist}</div>
+                <div
+                  onClick={() => showInfo('title', player.currentTrack)}
+                  role="button"
+                >
+                  {player.currentTrack.title}
+                </div>
+                <div
+                  onClick={() => showInfo('album', player.currentTrack)}
+                  role="button"
+                >
+                  {player.currentTrack.album}
+                </div>
+                <div
+                  onClick={() => showInfo('artist', player.currentTrack)}
+                  role="button"
+                >
+                  {player.currentTrack.artist}
+                </div>
               </div>
             </div>
           )}

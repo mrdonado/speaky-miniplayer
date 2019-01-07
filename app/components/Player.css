@@ -99,6 +99,11 @@
   font-size: 14px;
 }
 
+.trackInfo div:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .configButton {
   color: #afafaf;
   opacity: 0.7;
