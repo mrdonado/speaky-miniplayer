@@ -4,6 +4,7 @@
 // @flow
 import FontAwesome from 'react-fontawesome';
 import React, { Component } from 'react';
+import ReactSVG from 'react-svg';
 import { shell } from 'electron';
 import styles from './Player.css';
 import Spotify from '../utils/Spotify';
@@ -140,7 +141,9 @@ export default class Player extends Component<Props> {
                   styles.active}`}
                 type="button"
               >
-                <FontAwesome name="microphone" />
+                <div className={styles.speakyIcon}>
+                  <ReactSVG src="./components/speaky-white.svg" />
+                </div>
               </button>
 
               <button

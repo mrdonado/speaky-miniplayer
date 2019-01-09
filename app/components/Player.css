@@ -104,6 +104,17 @@
   cursor: pointer;
 }
 
+.speakyIcon {
+  display: inline-block;
+}
+
+.speakyIcon svg {
+  fill: #afafaf;
+  width: 17vw;
+  height: 15vw;
+  transition: fill 0.5s;
+}
+
 .configButton {
   color: #afafaf;
   opacity: 0.7;
@@ -123,4 +134,8 @@
 .active {
   color: white;
   opacity: 1;
+}
+
+.active svg {
+  fill: white;
 }
