@@ -4,10 +4,10 @@
 // @flow
 import FontAwesome from 'react-fontawesome';
 import React, { Component } from 'react';
-import ReactSVG from 'react-svg';
 import { shell } from 'electron';
 import styles from './Player.css';
 import Spotify from '../utils/Spotify';
+import speakyWhite from './speaky-white.svg';
 
 type Props = {
   player: object,
@@ -142,7 +142,7 @@ export default class Player extends Component<Props> {
                 type="button"
               >
                 <div className={styles.speakyIcon}>
-                  <ReactSVG src="./components/speaky-white.svg" />
+                  <div dangerouslySetInnerHTML={{ __html: speakyWhite }} />
                 </div>
               </button>
 

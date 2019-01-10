@@ -254,6 +254,7 @@
     "electron-updater": "^4.0.0",
     "history": "^4.7.2",
     "node-notifier": "^5.3.0",
+    "raw-loader": "^1.0.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-fontawesome": "^1.6.1",
@@ -264,7 +265,8 @@
     "react-svg": "^7.2.2",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "source-map-support": "^0.5.9"
+    "source-map-support": "^0.5.9",
+    "svg-inline-loader": "^0.8.0"
   },
   "devEngines": {
     "node": ">=7.x",
