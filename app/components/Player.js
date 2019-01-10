@@ -1,13 +1,16 @@
 /* eslint react/destructuring-assignment: "off" */
 /* eslint jsx-a11y/interactive-supports-focus: "off" */
 /* eslint jsx-a11y/click-events-have-key-events: "off" */
+/* eslint react/no-danger: "off" */
+/* eslint import/no-webpack-loader-syntax: "off" */
+
 // @flow
 import FontAwesome from 'react-fontawesome';
 import React, { Component } from 'react';
 import { shell } from 'electron';
+import speakyWhite from 'raw-loader!./speaky-white';
 import styles from './Player.css';
 import Spotify from '../utils/Spotify';
-import speakyWhite from './speaky-white.svg';
 
 type Props = {
   player: object,

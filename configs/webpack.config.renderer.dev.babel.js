@@ -181,7 +181,7 @@ export default merge.smart(baseConfig, {
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: 'raw-loader'
+          loader: 'url-loader'
         }
       },
       // Common Image Formats
