@@ -12,8 +12,12 @@
  */
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
+import util from 'util';
 import log from 'electron-log';
+import storage from 'electron-json-storage';
 import MenuBuilder from './menu';
+
+const getStorage = util.promisify(storage.get);
 
 export default class AppUpdater {
   constructor() {
@@ -75,7 +79,9 @@ app.on('ready', async () => {
     await installExtensions();
   }
 
-  mainWindow = new BrowserWindow({
+  const bounds = await getStorage('bounds');
+
+  const options = {
     show: false,
     resizable: false,
     width: 250,
@@ -86,7 +92,14 @@ app.on('ready', async () => {
     fullscreenable: false,
     enableLargerThanScreen: false,
     customButtonsOnHover: true
-  });
+  };
+
+  if (bounds) {
+    options.x = bounds.x;
+    options.y = bounds.y;
+  }
+
+  mainWindow = new BrowserWindow(options);
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
@@ -111,6 +124,10 @@ app.on('ready', async () => {
 
   mainWindow.on('resize', () => {
     mainWindow.setSize(250, 250);
+  });
+
+  mainWindow.on('move', () => {
+    storage.set('bounds', mainWindow.getBounds());
   });
 
   mainWindow.setAlwaysOnTop(true, 'floating');
