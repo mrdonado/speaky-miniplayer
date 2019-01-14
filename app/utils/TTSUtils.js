@@ -26,6 +26,7 @@ const saySomething = (text = '', lang = 'en-AU') => {
   message.text = message.text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   message.text = message.text.replace(/[-()[]]*/g, '');
   message.text = message.text.replace(/[\s]{2}/g, ' ');
+  message.text = message.text.replace(/Vol\. [\d]*/g, '');
   [message.voice] = voices;
   message.volume = 1;
   message.rate = 0.85;
