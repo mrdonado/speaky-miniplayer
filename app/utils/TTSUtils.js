@@ -1,4 +1,5 @@
 let voicesReady = false;
+const TIMEOUT = 5000;
 
 const errorCallback = e => {
   console.log(`TTS error: ${e.message}`);
@@ -32,6 +33,11 @@ const saySomething = (text = '', lang = 'en-AU') => {
   message.rate = 0.85;
   // message.pitch = 1;
   speechSynthesis.speak(message);
+  // Avoid using the TTS engine for the next couple of seconds
+  voicesReady = false;
+  setTimeout(() => {
+    voicesReady = true;
+  }, TIMEOUT);
 };
 
 export default { saySomething };
