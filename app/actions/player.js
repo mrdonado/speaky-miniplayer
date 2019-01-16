@@ -50,7 +50,7 @@ export const updateCurrentTrack = currentTrack => (dispatch, getState) => {
 export const errorHandler = e => (dispatch, getState) => {
   const { player } = getState();
 
-  if (e.message.indexOf('token') >= -1) {
+  if (e.message.indexOf('token') > -1) {
     playerUtils
       .refreshToken(player)
       .then(credentials => dispatch(updateAccessToken(credentials)))
