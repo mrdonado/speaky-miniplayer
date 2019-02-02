@@ -14,6 +14,10 @@ Nowadays it's easy to discover new music by playing pre-curated lists, but unles
 
 Speaky MiniPlayer is a PC desktop app developed with [electron](https://electronjs.org/) and compatible with Windows, MacOS X and Linux.
 
+## Download
+
+A pre-release is available for download. [Click here](https://github.com/fjrd84/speaky-miniplayer/releases) to open the download page and select the appropriate installer for your operating system.
+
 ## Features
 
 - Mini **cover of the album** currently being played, always visible by default
@@ -70,4 +74,4 @@ Run the unit tests with `yarn test`
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
 - **[MIT license](http://opensource.org/licenses/mit-license.php)**
-- Copyright 2019 © <a href="https://www.jdonado.com" target="_blank">F. Javier R. Donado</a>.
+- Copyright 2019 Â© <a href="https://www.jdonado.com" target="_blank">F. Javier R. Donado</a>.
