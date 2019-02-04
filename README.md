@@ -4,13 +4,13 @@
 
 > A robotic mini player for Spotify
 
-Speaky MiniPlayer is a minimalist music controller for Spotify that has an **integrated robotic radio speaker**. This speaker provides information about the music currently being played (such as title, artist, album...) by using a synthetic voice.
+Speaky MiniPlayer is a minimalist music controller for Spotify that has an **integrated robotic radio speaker**. This robotic speaker provides information about the music you're currently listening to (such as title, artist, album...) by using a synthetic voice.
 
 ![Screenshot 01](https://github.com/fjrd84/speaky-miniplayer/raw/master/resources/screenshots/screenshot-01.png)
 
 The goal is to emulate traditional radio programs where a speaker helps you discover new music by providing some context and additional information.
 
-Nowadays it's easy to discover new music by playing pre-curated lists, but unless we specifically go and look for information about the music being played, chances are we're not going to remember anything about it. This mini app tries to help you learn more about the music you listen to.
+Nowadays it's easy to discover new music by playing pre-curated or artist-related lists, but unless we specifically go and look for information about the music we're listening to, chances are we're not going to remember anything about it. This mini app tries to help you learn more about the music you play.
 
 Speaky MiniPlayer is a PC desktop app developed with [electron](https://electronjs.org/) and compatible with Windows, MacOS X and Linux.
 
