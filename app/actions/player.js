@@ -50,6 +50,11 @@ export const updateCurrentTrack = currentTrack => (dispatch, getState) => {
 export const errorHandler = e => (dispatch, getState) => {
   const { player } = getState();
 
+  if (e.message.indexOf('No active device found') > -1) {
+    console.warn('A device must be selected for playback to continue');
+    return;
+  }
+
   if (e.message.indexOf('token') > -1) {
     playerUtils
       .refreshToken(player)
@@ -72,7 +77,15 @@ export const getCurrentTrack = () => (dispatch, getState) => {
 export const playerAction = action => (dispatch, getState) => {
   const { player } = getState();
   playerUtils[action](player)
-    .then(() => setTimeout(() => dispatch(getCurrentTrack()), DEBOUNCE_TIME))
+    .then(msg => {
+      if (msg.status === 404) {
+        return msg.text();
+      }
+      return setTimeout(() => dispatch(getCurrentTrack()), DEBOUNCE_TIME);
+    })
+    .then(msg => {
+      throw new Error(msg);
+    })
     .catch(e => dispatch(errorHandler(e)));
 };
 
