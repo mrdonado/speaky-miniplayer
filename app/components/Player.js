@@ -5,12 +5,12 @@
 /* eslint import/no-webpack-loader-syntax: "off" */
 
 // @flow
-import FontAwesome from 'react-fontawesome';
 import React, { Component } from 'react';
+import FontAwesome from 'react-fontawesome';
 import { shell } from 'electron';
-import speakyWhite from 'raw-loader!./speaky-white';
 import styles from './Player.css';
 import Spotify from '../utils/Spotify';
+import ConfigurationView from './ConfigurationView';
 
 type Props = {
   player: object,
@@ -134,47 +134,12 @@ export default class Player extends Component<Props> {
       >
         <div className={styles.overlay}>
           {this.state.showConfig && (
-            <div className={styles.configuration}>
-              <button
-                onClick={() => {
-                  this.swapConfigView(true);
-                  updatePreference('TTS', !player.preferences.TTS);
-                }}
-                className={`${styles.configButton} ${player.preferences.TTS &&
-                  styles.active}`}
-                type="button"
-              >
-                <div className={styles.speakyIcon}>
-                  <div dangerouslySetInnerHTML={{ __html: speakyWhite }} />
-                </div>
-              </button>
-
-              <button
-                type="button"
-                className={`${styles.configButton} ${player.preferences
-                  .alwaysOnTop && styles.active}`}
-                onClick={() => {
-                  this.swapConfigView(true);
-                  swapAlwaysOnTop();
-                }}
-              >
-                <FontAwesome name="thumbtack" />
-              </button>
-
-              <button
-                type="button"
-                className={`${styles.configButton} ${player.preferences
-                  .notifications && styles.active}`}
-                onClick={() => {
-                  updatePreference(
-                    'notifications',
-                    !player.preferences.notifications
-                  );
-                }}
-              >
-                <FontAwesome name="bell" />
-              </button>
-            </div>
+            <ConfigurationView
+              swapConfigView={this.swapConfigView}
+              player={player}
+              swapAlwaysOnTop={swapAlwaysOnTop}
+              updatePreference={updatePreference}
+            />
           )}
           {!this.state.showConfig && (
             <div className={styles.player}>
