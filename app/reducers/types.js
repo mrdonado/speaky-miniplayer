@@ -1,7 +1,6 @@
 import type { Dispatch as ReduxDispatch, Store as ReduxStore } from 'redux';
 
 export type playerStateType = {
-  +counter: number,
   +credentials: object,
   +currentService: string,
   +currentTrack: object,

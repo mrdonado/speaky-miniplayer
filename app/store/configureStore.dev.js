@@ -4,7 +4,6 @@ import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
 import createRootReducer from '../reducers';
-import * as counterActions from '../actions/counter';
 import * as playerActions from '../actions/player';
 import type { playerStateType } from '../reducers/types';
 
@@ -37,7 +36,6 @@ const configureStore = (initialState?: playerStateType) => {
 
   // Redux DevTools Configuration
   const actionCreators = {
-    ...counterActions,
     ...playerActions,
     ...routerActions
   };
