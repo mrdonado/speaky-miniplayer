@@ -83,9 +83,7 @@ export const playerAction = action => (dispatch, getState) => {
       }
       return setTimeout(() => dispatch(getCurrentTrack()), DEBOUNCE_TIME);
     })
-    .then(msg => {
-      throw new Error(msg);
-    })
+    .then(msg => (typeof msg === 'string' ? throw new Error(msg) : null))
     .catch(e => dispatch(errorHandler(e)));
 };
 
