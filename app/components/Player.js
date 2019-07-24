@@ -10,6 +10,7 @@ import FontAwesome from 'react-fontawesome';
 import { shell } from 'electron';
 import styles from './Player.css';
 import Spotify from '../utils/Spotify';
+import VIEWS from './ViewsConstant';
 import ConfigurationView from './ConfigurationView';
 
 type Props = {
@@ -58,32 +59,28 @@ export default class Player extends Component<Props> {
 
   constructor(props) {
     super(props);
-    this.swapConfigView = this.swapConfigView.bind(this);
+    this.setActiveView = this.setActiveView.bind(this);
     this.state = {
-      showConfig: false
+      activeView: VIEWS.PLAYER
     };
   }
 
   /**
-   * It shows or hides the configuration, when `value` is a boolean.
-   * When `value` is different from a boolean, it will swap the
-   * `showConfig` value.
-   *
-   * When the config has been set to be shown (`value = true`), a
-   * timer is configured to automatically go back to the main view.
+   * It sets the specified view. When the view to be shown is
+   * CONFIGURATION, a timeout back to PLAYER view will be programmed.
    */
-  swapConfigView(value) {
+  setActiveView(activeView) {
+    this.setState({ activeView });
+
     if (timerId) {
       clearTimeout(timerId);
     }
-    const wasActive = this.state.showConfig;
-    if (typeof value === 'boolean') {
-      this.setState({ showConfig: value });
-    } else {
-      this.setState({ showConfig: !wasActive });
-    }
-    if (!wasActive || value === true) {
-      timerId = setTimeout(() => this.swapConfigView(false), CONFIG_TIMEOUT);
+
+    if (activeView === VIEWS.CONFIGURATION) {
+      timerId = setTimeout(
+        () => this.setActiveView(VIEWS.PLAYER),
+        CONFIG_TIMEOUT
+      );
     }
   }
 
@@ -133,15 +130,15 @@ export default class Player extends Component<Props> {
         style={{ backgroundImage: `url(${player.currentTrack.coverArt})` }}
       >
         <div className={styles.overlay}>
-          {this.state.showConfig && (
+          {this.state.activeView === VIEWS.CONFIGURATION && (
             <ConfigurationView
-              swapConfigView={this.swapConfigView}
+              setActiveView={this.setActiveView}
               player={player}
               swapAlwaysOnTop={swapAlwaysOnTop}
               updatePreference={updatePreference}
             />
           )}
-          {!this.state.showConfig && (
+          {this.state.activeView === VIEWS.PLAYER && (
             <div className={styles.player}>
               <button onClick={previous} type="button">
                 <FontAwesome name="backward" />
@@ -185,7 +182,13 @@ export default class Player extends Component<Props> {
           <button
             className={`${styles.swapConfigButton} 
             ${this.state.showConfig && styles.active}`}
-            onClick={this.swapConfigView}
+            onClick={() =>
+              this.setActiveView(
+                this.state.activeView === VIEWS.CONFIGURATION
+                  ? VIEWS.PLAYER
+                  : VIEWS.CONFIGURATION
+              )
+            }
             type="button"
           >
             <FontAwesome name="cog" />

@@ -1,0 +1,7 @@
+const VIEWS = {
+  PLAYER: 'PLAYER',
+  CONFIGURATION: 'CONFIGURATION',
+  DEVICES: 'DEVICES'
+};
+
+export default VIEWS;
