@@ -78,6 +78,23 @@
   opacity: 0.7;
 }
 
+.swapViewButtons {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #afafaf;
+  opacity: 0.7;
+  font-size: 9vw;
+}
+
+.swapViewButtons button {
+  color: #afafaf;
+}
+
+.swapViewButtons button.active {
+  color: white;
+}
+
 .overlay button:hover {
   opacity: 1;
 }
@@ -111,22 +128,6 @@
   width: 17vw;
   height: 15vw;
   transition: fill 0.5s;
-}
-
-.configButton {
-  color: #afafaf;
-  opacity: 0.7;
-}
-
-.swapConfigButton {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  color: #afafaf;
-}
-
-.overlay .swapConfigButton {
-  font-size: 9vw;
 }
 
 .active {

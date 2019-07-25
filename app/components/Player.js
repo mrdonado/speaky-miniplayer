@@ -12,6 +12,7 @@ import styles from './Player.css';
 import Spotify from '../utils/Spotify';
 import VIEWS from './ViewsConstant';
 import ConfigurationView from './ConfigurationView';
+import DevicesView from './DevicesView';
 
 type Props = {
   player: object,
@@ -138,6 +139,9 @@ export default class Player extends Component<Props> {
               updatePreference={updatePreference}
             />
           )}
+          {this.state.activeView === VIEWS.DEVICES && (
+            <DevicesView setActiveView={this.setActiveView} />
+          )}
           {this.state.activeView === VIEWS.PLAYER && (
             <div className={styles.player}>
               <button onClick={previous} type="button">
@@ -179,20 +183,36 @@ export default class Player extends Component<Props> {
               </div>
             </div>
           )}
-          <button
-            className={`${styles.swapConfigButton} 
-            ${this.state.showConfig && styles.active}`}
-            onClick={() =>
-              this.setActiveView(
-                this.state.activeView === VIEWS.CONFIGURATION
-                  ? VIEWS.PLAYER
-                  : VIEWS.CONFIGURATION
-              )
-            }
-            type="button"
-          >
-            <FontAwesome name="cog" />
-          </button>
+          <div className={`${styles.swapViewButtons}`}>
+            <button
+              className={`${this.state.activeView === VIEWS.DEVICES &&
+                styles.active}`}
+              type="button"
+              onClick={() =>
+                this.setActiveView(
+                  this.state.activeView === VIEWS.DEVICES
+                    ? VIEWS.PLAYER
+                    : VIEWS.DEVICES
+                )
+              }
+            >
+              D
+            </button>
+            <button
+              className={`${styles.swapConfigButton} 
+            ${this.state.activeView === VIEWS.CONFIGURATION && styles.active}`}
+              onClick={() =>
+                this.setActiveView(
+                  this.state.activeView === VIEWS.CONFIGURATION
+                    ? VIEWS.PLAYER
+                    : VIEWS.CONFIGURATION
+                )
+              }
+              type="button"
+            >
+              <FontAwesome name="cog" />
+            </button>
+          </div>
         </div>
       </div>
     );
