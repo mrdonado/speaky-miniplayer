@@ -46,6 +46,22 @@ const spotifyTrackToGenericMap = track => ({
 });
 
 /**
+ * It returns a promise with the list of available devices.
+ */
+const obtainDevices = accessToken =>
+  fetch('https://api.spotify.com/v1/me/player/devices', {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${accessToken}` }
+  })
+    .then(res => res.json())
+    .then(devices => {
+      if (devices.error) {
+        return Promise.reject(devices.error);
+      }
+      return devices;
+    });
+
+/**
  * It returns a promise with the track currently being played
  */
 const getCurrentTrack = accessToken =>
@@ -181,6 +197,7 @@ const refreshToken = token => {
 export default {
   getCredentials,
   getCurrentTrack,
+  obtainDevices,
   refreshToken,
   play,
   pause,

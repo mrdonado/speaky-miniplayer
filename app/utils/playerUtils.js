@@ -17,6 +17,12 @@ const triggerNotification = state => {
   }
 };
 
+const obtainDevices = state => {
+  const service = state.currentService;
+  const credentials = state.credentials[service];
+  return APIs[service].obtainDevices(credentials.access_token);
+};
+
 const play = state => {
   const service = state.currentService;
   const credentials = state.credentials[service];
@@ -56,6 +62,7 @@ const refreshToken = state => {
 export default {
   triggerNotification,
   getCurrentTrack,
+  obtainDevices,
   refreshToken,
   play,
   pause,

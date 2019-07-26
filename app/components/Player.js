@@ -20,6 +20,7 @@ type Props = {
   previous: () => void,
   play: () => void,
   pause: () => void,
+  obtainDevices: () => void,
   swapAlwaysOnTop: () => void,
   updatePreference: () => void,
   setCredentials: () => void
@@ -91,6 +92,7 @@ export default class Player extends Component<Props> {
       setCredentials,
       swapAlwaysOnTop,
       updatePreference,
+      obtainDevices,
       next,
       previous,
       play,
@@ -140,7 +142,10 @@ export default class Player extends Component<Props> {
             />
           )}
           {this.state.activeView === VIEWS.DEVICES && (
-            <DevicesView setActiveView={this.setActiveView} />
+            <DevicesView
+              setActiveView={this.setActiveView}
+              obtainDevices={obtainDevices}
+            />
           )}
           {this.state.activeView === VIEWS.PLAYER && (
             <div className={styles.player}>

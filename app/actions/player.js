@@ -47,6 +47,19 @@ export const updateCurrentTrack = currentTrack => (dispatch, getState) => {
   }
 };
 
+export const obtainDevices = () => (dispatch, getState) => {
+  const { player } = getState();
+  playerUtils
+    .obtainDevices(player)
+    .then(msg => {
+      // obtain devices
+      console.log(msg);
+      return msg;
+    })
+    .then(msg => (typeof msg === 'string' ? throw new Error(msg) : null))
+    .catch(e => dispatch(errorHandler(e)));
+};
+
 export const errorHandler = e => (dispatch, getState) => {
   const { player } = getState();
 
