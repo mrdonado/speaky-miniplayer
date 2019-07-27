@@ -144,7 +144,7 @@ export default class Player extends Component<Props> {
           {this.state.activeView === VIEWS.DEVICES && (
             <DevicesView
               setActiveView={this.setActiveView}
-              obtainDevices={obtainDevices}
+              devices={player.devices}
             />
           )}
           {this.state.activeView === VIEWS.PLAYER && (
@@ -193,13 +193,14 @@ export default class Player extends Component<Props> {
               className={`${this.state.activeView === VIEWS.DEVICES &&
                 styles.active}`}
               type="button"
-              onClick={() =>
+              onClick={() => {
+                obtainDevices();
                 this.setActiveView(
                   this.state.activeView === VIEWS.DEVICES
                     ? VIEWS.PLAYER
                     : VIEWS.DEVICES
-                )
-              }
+                );
+              }}
             >
               D
             </button>

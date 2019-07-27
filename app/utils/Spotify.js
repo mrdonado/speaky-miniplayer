@@ -58,7 +58,7 @@ const obtainDevices = accessToken =>
       if (devices.error) {
         return Promise.reject(devices.error);
       }
-      return devices;
+      return devices.devices;
     });
 
 /**

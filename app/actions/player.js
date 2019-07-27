@@ -7,6 +7,7 @@ export const UPDATE_ACCESS_TOKEN = 'UPDATE_ACCESS_TOKEN';
 export const UPDATE_CURRENT_TRACK = 'UPDATE_CURRENT_TRACK';
 export const UPDATE_LAST_MESSAGE = 'UPDATE_LAST_MESSAGE';
 export const UPDATE_PREFERENCE = 'UPDATE_PREFERENCE';
+export const UPDATE_DEVICES_LIST = 'UPDATE_DEVICES_LIST';
 
 // When an API has been called, a small amount of time will be
 // required until the next API call has the latest information.
@@ -51,10 +52,12 @@ export const obtainDevices = () => (dispatch, getState) => {
   const { player } = getState();
   playerUtils
     .obtainDevices(player)
-    .then(msg => {
-      // obtain devices
-      console.log(msg);
-      return msg;
+    .then(devices => {
+      dispatch({
+        devices,
+        type: UPDATE_DEVICES_LIST
+      });
+      return devices;
     })
     .then(msg => (typeof msg === 'string' ? throw new Error(msg) : null))
     .catch(e => dispatch(errorHandler(e)));
