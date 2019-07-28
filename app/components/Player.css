@@ -17,6 +17,10 @@
   overflow: hidden;
 }
 
+button {
+  cursor: pointer;
+}
+
 .overlay * {
   -webkit-app-region: no-drag;
   -webkit-user-select: none;
