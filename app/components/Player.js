@@ -148,6 +148,7 @@ export default class Player extends Component<Props> {
               setActiveView={this.setActiveView}
               devices={player.devices}
               transferPlayback={transferPlayback}
+              obtainDevices={obtainDevices}
             />
           )}
           {this.state.activeView === VIEWS.PLAYER && (
