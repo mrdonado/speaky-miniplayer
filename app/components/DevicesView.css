@@ -1,3 +1,23 @@
-.active {
+.devicesView {
+  margin: 0;
+  padding: 0;
+}
+
+.devicesList {
+  margin: 0;
+  padding: 0;
+}
+
+.devicesList button {
+  color: gray;
+}
+
+.devicesList button.active {
   color: yellow;
+}
+
+.devicesList li button {
+  font-size: 13vw;
+  margin: 1vh;
+  padding: 0;
 }
