@@ -23,6 +23,12 @@ const obtainDevices = state => {
   return APIs[service].obtainDevices(credentials.access_token);
 };
 
+const transferPlayback = (state, device) => {
+  const service = state.currentService;
+  const credentials = state.credentials[service];
+  return APIs[service].transferPlayback(credentials.access_token, device);
+};
+
 const play = state => {
   const service = state.currentService;
   const credentials = state.credentials[service];
@@ -63,6 +69,7 @@ export default {
   triggerNotification,
   getCurrentTrack,
   obtainDevices,
+  transferPlayback,
   refreshToken,
   play,
   pause,

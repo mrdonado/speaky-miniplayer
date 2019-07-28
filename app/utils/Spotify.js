@@ -62,6 +62,19 @@ const obtainDevices = accessToken =>
     });
 
 /**
+ * It transfer the current playback to a specified device
+ */
+const transferPlayback = (accessToken, device) =>
+  fetch('https://api.spotify.com/v1/me/player', {
+    method: 'PUT',
+    body: JSON.stringify({
+      device_ids: [device],
+      play: true
+    }),
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+/**
  * It returns a promise with the track currently being played
  */
 const getCurrentTrack = accessToken =>
@@ -198,6 +211,7 @@ export default {
   getCredentials,
   getCurrentTrack,
   obtainDevices,
+  transferPlayback,
   refreshToken,
   play,
   pause,

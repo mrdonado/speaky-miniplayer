@@ -127,3 +127,8 @@ export const triggerNotification = () => (dispatch, getState) => {
   const { player } = getState();
   playerUtils.triggerNotification(player);
 };
+
+export const transferPlayback = device => (dispatch, getState) => {
+  const { player } = getState();
+  playerUtils.transferPlayback(player, device);
+};
