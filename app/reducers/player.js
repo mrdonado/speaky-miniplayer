@@ -5,7 +5,8 @@ import {
   UPDATE_CURRENT_TRACK,
   UPDATE_LAST_MESSAGE,
   UPDATE_PREFERENCE,
-  UPDATE_DEVICES_LIST
+  UPDATE_DEVICES_LIST,
+  UPDATE_LAST_ACTIVE_DEVICE
 } from '../actions/player';
 import type { Action } from './types';
 
@@ -25,7 +26,8 @@ const initialState = {
     notifications: true,
     alwaysOnTop: true
   },
-  devices: null
+  devices: null,
+  lastActiveDevice: null
 };
 
 export default function player(state = initialState, action: Action) {
@@ -48,6 +50,11 @@ export default function player(state = initialState, action: Action) {
 
     case UPDATE_LAST_MESSAGE:
       return Object.assign({}, state, { lastMessage: action.lastMessage });
+
+    case UPDATE_LAST_ACTIVE_DEVICE:
+      return Object.assign({}, state, {
+        lastActiveDevice: action.lastActiveDevice
+      });
 
     case UPDATE_PREFERENCE:
       preferences[action.preference] = action.value;

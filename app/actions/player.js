@@ -8,6 +8,7 @@ export const UPDATE_CURRENT_TRACK = 'UPDATE_CURRENT_TRACK';
 export const UPDATE_LAST_MESSAGE = 'UPDATE_LAST_MESSAGE';
 export const UPDATE_PREFERENCE = 'UPDATE_PREFERENCE';
 export const UPDATE_DEVICES_LIST = 'UPDATE_DEVICES_LIST';
+export const UPDATE_LAST_ACTIVE_DEVICE = 'UPDATE_LAST_ACTIVE_DEVICE';
 
 // When an API has been called, a small amount of time will be
 // required until the next API call has the latest information.
@@ -16,6 +17,11 @@ const DEBOUNCE_TIME = 100;
 export const updateLastMessage = lastMessage => ({
   lastMessage,
   type: UPDATE_LAST_MESSAGE
+});
+
+export const updateLastActiveDevice = lastActiveDevice => ({
+  lastActiveDevice,
+  type: UPDATE_LAST_ACTIVE_DEVICE
 });
 
 export const setCredentials = (credentials, musicService = 'spotify') => ({
@@ -43,8 +49,11 @@ export const updateCurrentTrack = currentTrack => (dispatch, getState) => {
     type: UPDATE_CURRENT_TRACK
   });
   if (newMessage !== lastMessage) {
+    // When the track is different than the previous one, a notification
+    // will be triggered and the list of devices will be updated
     dispatch(updateLastMessage(newMessage));
     playerUtils.triggerNotification(getState().player);
+    dispatch(obtainDevices());
   }
 };
 
@@ -57,6 +66,13 @@ export const obtainDevices = () => (dispatch, getState) => {
         devices,
         type: UPDATE_DEVICES_LIST
       });
+
+      const activeDevice = (devices || []).find(d => d.is_active);
+
+      if (activeDevice) {
+        dispatch(updateLastActiveDevice(activeDevice.id));
+      }
+
       return devices;
     })
     .then(msg => (typeof msg === 'string' ? throw new Error(msg) : null))
@@ -95,6 +111,9 @@ export const playerAction = action => (dispatch, getState) => {
   playerUtils[action](player)
     .then(msg => {
       if (msg.status === 404) {
+        // A 404 means that no device has been selected as active.
+        // The playback will be transferred to the last active device.
+        dispatch(transferPlayback(player.lastActiveDevice));
         return msg.text();
       }
       return setTimeout(() => dispatch(getCurrentTrack()), DEBOUNCE_TIME);
