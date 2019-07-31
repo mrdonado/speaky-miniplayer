@@ -18,6 +18,7 @@ type Props = {
   player: object,
   next: () => void,
   previous: () => void,
+  logout: () => void,
   play: () => void,
   pause: () => void,
   obtainDevices: () => void,
@@ -98,7 +99,8 @@ export default class Player extends Component<Props> {
       next,
       previous,
       play,
-      pause
+      pause,
+      logout
     } = this.props;
 
     const isAuthorized =
@@ -141,6 +143,7 @@ export default class Player extends Component<Props> {
               player={player}
               swapAlwaysOnTop={swapAlwaysOnTop}
               updatePreference={updatePreference}
+              logout={logout}
             />
           )}
           {this.state.activeView === VIEWS.DEVICES && (

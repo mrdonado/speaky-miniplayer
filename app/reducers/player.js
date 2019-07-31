@@ -6,7 +6,8 @@ import {
   UPDATE_LAST_MESSAGE,
   UPDATE_PREFERENCE,
   UPDATE_DEVICES_LIST,
-  UPDATE_LAST_ACTIVE_DEVICE
+  UPDATE_LAST_ACTIVE_DEVICE,
+  LOGOUT
 } from '../actions/player';
 import type { Action } from './types';
 
@@ -62,6 +63,9 @@ export default function player(state = initialState, action: Action) {
 
     case UPDATE_DEVICES_LIST:
       return Object.assign({}, state, { devices: action.devices });
+
+    case LOGOUT:
+      return Object.assign({}, initialState);
 
     default:
       return state;

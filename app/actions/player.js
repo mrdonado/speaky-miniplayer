@@ -9,10 +9,13 @@ export const UPDATE_LAST_MESSAGE = 'UPDATE_LAST_MESSAGE';
 export const UPDATE_PREFERENCE = 'UPDATE_PREFERENCE';
 export const UPDATE_DEVICES_LIST = 'UPDATE_DEVICES_LIST';
 export const UPDATE_LAST_ACTIVE_DEVICE = 'UPDATE_LAST_ACTIVE_DEVICE';
+export const LOGOUT = 'LOGOUT';
 
 // When an API has been called, a small amount of time will be
 // required until the next API call has the latest information.
 const DEBOUNCE_TIME = 100;
+
+export const logout = () => ({ type: LOGOUT });
 
 export const updateLastMessage = lastMessage => ({
   lastMessage,
