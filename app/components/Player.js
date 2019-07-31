@@ -206,7 +206,7 @@ export default class Player extends Component<Props> {
                 );
               }}
             >
-              D
+              <FontAwesome name="mobile-alt" />
             </button>
             <button
               className={`${styles.swapConfigButton} 
