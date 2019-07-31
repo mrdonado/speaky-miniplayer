@@ -66,7 +66,11 @@ const ConfigurationView = (props: Props) => {
       >
         <FontAwesome name="bell" />
       </button>
-      <button type="button" className={`${styles.active}`} onClick={logout}>
+      <button
+        type="button"
+        className={`${styles.logoutButton}`}
+        onClick={logout}
+      >
         <FontAwesome name="sign-out-alt" />
       </button>
     </div>
