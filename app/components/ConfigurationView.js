@@ -14,19 +14,27 @@ type Props = {
   player: object,
   swapAlwaysOnTop: () => void,
   setActiveView: () => void,
-  updatePreference: () => void
+  updatePreference: () => void,
+  logout: () => void
 };
 
 const ConfigurationView = (props: Props) => {
-  const resetTimerConfigView = () => props.setActiveView(VIEWS.CONFIGURATION);
+  const {
+    player,
+    swapAlwaysOnTop,
+    setActiveView,
+    updatePreference,
+    logout
+  } = props;
+  const resetTimerConfigView = () => setActiveView(VIEWS.CONFIGURATION);
   return (
     <div className={styles.configuration}>
       <button
         onClick={() => {
           resetTimerConfigView();
-          props.updatePreference('TTS', !props.player.preferences.TTS);
+          updatePreference('TTS', !player.preferences.TTS);
         }}
-        className={`${styles.configButton} ${props.player.preferences.TTS &&
+        className={`${styles.configButton} ${player.preferences.TTS &&
           styles.active}`}
         type="button"
       >
@@ -37,11 +45,11 @@ const ConfigurationView = (props: Props) => {
 
       <button
         type="button"
-        className={`${styles.configButton} ${props.player.preferences
-          .alwaysOnTop && styles.active}`}
+        className={`${styles.configButton} ${player.preferences.alwaysOnTop &&
+          styles.active}`}
         onClick={() => {
           resetTimerConfigView();
-          props.swapAlwaysOnTop();
+          swapAlwaysOnTop();
         }}
       >
         <FontAwesome name="thumbtack" />
@@ -49,17 +57,17 @@ const ConfigurationView = (props: Props) => {
 
       <button
         type="button"
-        className={`${styles.configButton} ${props.player.preferences
-          .notifications && styles.active}`}
+        className={`${styles.configButton} ${player.preferences.notifications &&
+          styles.active}`}
         onClick={() => {
           resetTimerConfigView();
-          props.updatePreference(
-            'notifications',
-            !props.player.preferences.notifications
-          );
+          updatePreference('notifications', !player.preferences.notifications);
         }}
       >
         <FontAwesome name="bell" />
+      </button>
+      <button type="button" className={`${styles.active}`} onClick={logout}>
+        <FontAwesome name="sign-out-alt" />
       </button>
     </div>
   );
