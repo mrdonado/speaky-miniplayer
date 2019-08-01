@@ -82,6 +82,24 @@ button {
   opacity: 0.7;
 }
 
+.logoutButton {
+  color: white;
+  text-align: right;
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  opacity: 0.7;
+}
+
+button.configButton {
+  opacity: 0.7;
+  color: #afafaf;
+}
+
+.logoutButton span {
+  font-size: 1.5rem;
+}
+
 .swapViewButtons {
   position: absolute;
   color: #afafaf;
@@ -99,8 +117,11 @@ button {
   margin: 0 0.5rem 0 0;
 }
 
-.swapViewButtons button.active {
+button.active,
+.swapViewButtons button.active,
+.active {
   color: white;
+  opacity: 1;
 }
 
 .overlay button:hover {
@@ -138,24 +159,6 @@ button {
   transition: fill 0.5s;
 }
 
-.active {
-  color: white;
-  opacity: 1;
-}
-
 .active svg {
   fill: white;
-}
-
-.logoutButton {
-  color: white;
-  text-align: right;
-  position: absolute;
-  bottom: 0.5rem;
-  right: 0.5rem;
-  opacity: 0.7;
-}
-
-.logoutButton span {
-  font-size: 1.5rem;
 }
