@@ -7,6 +7,7 @@ import {
   UPDATE_PREFERENCE,
   UPDATE_DEVICES_LIST,
   UPDATE_LAST_ACTIVE_DEVICE,
+  SET_PLAYING_STATUS,
   LOGOUT
 } from '../actions/player';
 import type { Action } from './types';
@@ -33,7 +34,8 @@ const initialState = {
 
 export default function player(state = initialState, action: Action) {
   const { musicService } = action;
-  const { preferences } = state;
+  const { preferences } = Object.assign({}, state);
+  const { currentTrack } = Object.assign({}, state);
   let credentials = {};
 
   switch (action.type) {
@@ -63,6 +65,10 @@ export default function player(state = initialState, action: Action) {
 
     case UPDATE_DEVICES_LIST:
       return Object.assign({}, state, { devices: action.devices });
+
+    case SET_PLAYING_STATUS:
+      currentTrack.playing = action.playing;
+      return Object.assign({}, state, currentTrack);
 
     case LOGOUT:
       return Object.assign({}, initialState);

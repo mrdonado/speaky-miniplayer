@@ -9,6 +9,7 @@ export const UPDATE_LAST_MESSAGE = 'UPDATE_LAST_MESSAGE';
 export const UPDATE_PREFERENCE = 'UPDATE_PREFERENCE';
 export const UPDATE_DEVICES_LIST = 'UPDATE_DEVICES_LIST';
 export const UPDATE_LAST_ACTIVE_DEVICE = 'UPDATE_LAST_ACTIVE_DEVICE';
+export const SET_PLAYING_STATUS = 'SET_PLAYING_STATUS';
 export const LOGOUT = 'LOGOUT';
 
 // When an API has been called, a small amount of time will be
@@ -110,6 +111,14 @@ export const getCurrentTrack = () => (dispatch, getState) => {
 };
 
 export const playerAction = action => (dispatch, getState) => {
+  // Optimistic playing status update, instead of waiting for an
+  // update from the server
+  if (['play', 'pause'].indexOf(action) > -1) {
+    dispatch({
+      type: SET_PLAYING_STATUS,
+      playing: action === 'play'
+    });
+  }
   const { player } = getState();
   playerUtils[action](player)
     .then(msg => {
