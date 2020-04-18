@@ -4,13 +4,23 @@
  */
 @import '~@fortawesome/fontawesome-free/css/all.css';
 
+html {
+  background-color: transparent;
+  opacity: 0.5;
+  transition: opacity 0.5s;
+}
+
+html:hover {
+  opacity: 1;
+}
+
 body {
   position: relative;
   color: white;
   padding: 0;
   margin: 0;
   height: 100vh;
-  background-color: #131313;
+  background-color: transparent;
   font-family: Arial, Helvetica, Helvetica Neue, serif;
   overflow-y: hidden;
 }

@@ -91,7 +91,8 @@ app.on('ready', async () => {
     maximizable: false,
     fullscreenable: false,
     enableLargerThanScreen: false,
-    customButtonsOnHover: true
+    customButtonsOnHover: true,
+    transparent: true
   };
 
   if (bounds) {
