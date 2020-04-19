@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router';
-import routes from './constants/routes';
+import routes from './constants/player-routes';
 import App from './containers/App';
 import PlayerPage from './containers/PlayerPage';
 
