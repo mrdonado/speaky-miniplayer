@@ -7,7 +7,7 @@
 // @flow
 import React, { Component } from 'react';
 import FontAwesome from 'react-fontawesome';
-import { shell } from 'electron';
+import { shell, remote } from 'electron';
 import styles from './Player.css';
 import Spotify from '../utils/Spotify';
 import VIEWS from './ViewsConstant';
@@ -56,6 +56,22 @@ const showInfo = (info, track) => {
     default:
       console.warn(`Calling showInfo with ${info}`);
   }
+};
+
+const showCdCover = coverArt => {
+  const cdCoverWindow = new remote.BrowserWindow({
+    width: 640,
+    height: 640,
+    titleBarStyle: 'hiddenInset',
+    show: false,
+    maximizable: false,
+    fullscreenable: false,
+    'node-integration': false,
+    'web-security': false
+  });
+  cdCoverWindow.loadURL(coverArt);
+  cdCoverWindow.show();
+  setTimeout(() => cdCoverWindow.close(), 5000);
 };
 
 export default class Player extends Component<Props> {
@@ -195,6 +211,15 @@ export default class Player extends Component<Props> {
             </div>
           )}
           <div className={`${styles.swapViewButtons}`}>
+            <button
+              type="button"
+              onClick={() => {
+                showCdCover(player.currentTrack.coverArt);
+              }}
+            >
+              <FontAwesome name="compact-disc" />
+            </button>
+
             <button
               className={`${this.state.activeView === VIEWS.DEVICES &&
                 styles.active}`}
