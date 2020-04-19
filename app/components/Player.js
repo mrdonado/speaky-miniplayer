@@ -112,9 +112,7 @@ export default class Player extends Component<Props> {
         <div className={styles.container}>
           <div className={styles.loginView}>
             <div className={styles.loginText}>
-              {
-                'Speaky MiniPlayer needs a connection to a streaming music service.'
-              }
+              Speaky MiniPlayer needs a connection to a streaming music service.
             </div>
             <button
               onClick={() =>
