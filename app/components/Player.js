@@ -131,7 +131,8 @@ export default class Player extends Component<Props> {
     return (
       <div
         data-tid="container"
-        className={styles.container}
+        className={`${styles.container} ${!player.preferences.alwaysOnTop &&
+          styles.noTransparent}`}
         style={{ backgroundImage: `url(${player.currentTrack.coverArt})` }}
       >
         <div className={styles.overlay}>

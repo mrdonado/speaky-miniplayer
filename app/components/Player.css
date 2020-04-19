@@ -23,6 +23,10 @@
   opacity: 1;
 }
 
+.noTransparent {
+  opacity: 1;
+}
+
 button {
   cursor: pointer;
 }
