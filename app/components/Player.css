@@ -37,14 +37,16 @@ button {
 }
 
 .loginView {
+  background-color: #131313;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   text-align: center;
   line-height: 25px;
   margin: auto;
-  width: 90%;
-  height: 90%;
+  padding: 0 1.5rem 0 1.5rem;
+  width: 80%;
+  height: 100%;
 }
 
 .loginText {
