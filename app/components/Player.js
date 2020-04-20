@@ -58,31 +58,54 @@ const showInfo = (info, track) => {
   }
 };
 
-const showCdCover = coverArt => {
-  const cdCoverWindow = new remote.BrowserWindow({
-    width: 640,
-    height: 640,
-    titleBarStyle: 'hiddenInset',
-    show: false,
-    maximizable: false,
-    fullscreenable: false,
-    'node-integration': false,
-    'web-security': false
-  });
-  cdCoverWindow.loadURL(coverArt);
-  cdCoverWindow.show();
-  setTimeout(() => cdCoverWindow.close(), 5000);
-};
-
 export default class Player extends Component<Props> {
   props: Props;
 
   constructor(props) {
     super(props);
+    this.cdCoverWindow = null;
+    this.timerCdCoverWindow = null;
+
     this.setActiveView = this.setActiveView.bind(this);
     this.state = {
-      activeView: VIEWS.PLAYER
+      activeView: VIEWS.PLAYER,
+      showCoverArt: false
     };
+  }
+
+  showCdCover() {
+    const { coverArt } = this.props.player.currentTrack;
+    const closeCdCoverWindow = () => {
+      clearTimeout(this.timerCdCoverWindow);
+      this.setState({ showCoverArt: false });
+      try {
+        this.cdCoverWindow.close();
+      } catch (e) {
+        // The window has already been closed
+      }
+      this.timerCdCoverWindow = null;
+    };
+    if (this.timerCdCoverWindow) {
+      closeCdCoverWindow();
+      return;
+    }
+    this.cdCoverWindow = new remote.BrowserWindow({
+      width: 640,
+      height: 640,
+      titleBarStyle: 'hiddenInset',
+      show: false,
+      resizable: false,
+      maximizable: false,
+      minimizable: false,
+      fullscreenable: false,
+      'node-integration': false,
+      'web-security': false
+    });
+    this.cdCoverWindow.on('close', closeCdCoverWindow);
+    this.cdCoverWindow.loadURL(coverArt);
+    this.cdCoverWindow.show();
+    this.setState({ showCoverArt: true });
+    this.timerCdCoverWindow = setTimeout(closeCdCoverWindow, 5000);
   }
 
   /**
@@ -213,9 +236,9 @@ export default class Player extends Component<Props> {
           <div className={`${styles.swapViewButtons}`}>
             <button
               type="button"
-              onClick={() => {
-                showCdCover(player.currentTrack.coverArt);
-              }}
+              className={`${styles.swapConfigButton} 
+            ${this.state.showCoverArt && styles.active}`}
+              onClick={() => this.showCdCover()}
             >
               <FontAwesome name="compact-disc" />
             </button>
