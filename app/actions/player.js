@@ -41,9 +41,7 @@ export const updateAccessToken = (credentials, musicService = 'spotify') => ({
 });
 
 const trackToText = track =>
-  `You're listening to ${track.title}, by ${track.artist}, from the album ${
-    track.album
-  }`;
+  `You're listening to ${track.title}, by ${track.artist}, from the album ${track.album}`;
 
 export const updateCurrentTrack = currentTrack => (dispatch, getState) => {
   const { lastMessage } = getState().player;
@@ -86,8 +84,15 @@ export const obtainDevices = () => (dispatch, getState) => {
 export const errorHandler = e => (dispatch, getState) => {
   const { player } = getState();
 
-  if (e.message.indexOf('No active device found') > -1) {
+  if (
+    e.message.indexOf('No active device found') > -1 ||
+    e.message.indexOf('Unexpected end of JSON input') > -1
+  ) {
     console.warn('A device must be selected for playback to continue');
+    // Attempt to resume on the last active device
+    if (player.lastActiveDevice) {
+      dispatch(transferPlayback(player.lastActiveDevice));
+    }
     return;
   }
 
