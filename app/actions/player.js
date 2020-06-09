@@ -84,11 +84,12 @@ export const obtainDevices = () => (dispatch, getState) => {
 export const errorHandler = e => (dispatch, getState) => {
   const { player } = getState();
 
-  if (
-    e.message.indexOf('No active device found') > -1 ||
-    e.message.indexOf('Unexpected end of JSON input') > -1
-  ) {
+  if (e.message.indexOf('No active device found') > -1) {
     console.warn('A device must be selected for playback to continue');
+    return;
+  }
+
+  if (e.message.indexOf('Playback failed') > -1) {
     // Attempt to resume on the last active device
     if (player.lastActiveDevice) {
       dispatch(transferPlayback(player.lastActiveDevice));
