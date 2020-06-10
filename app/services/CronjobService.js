@@ -29,6 +29,7 @@ const start = () => {
   if (!state.player.preferences.alwaysOnTop) {
     store.dispatch(swapAlwaysOnTop(false));
   }
+  cronjobTasks();
 
   cronjobId = setInterval(cronjobTasks, config.updateInterval);
 };

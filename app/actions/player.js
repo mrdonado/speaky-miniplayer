@@ -101,6 +101,7 @@ export const errorHandler = e => (dispatch, getState) => {
     playerUtils
       .refreshToken(player)
       .then(credentials => dispatch(updateAccessToken(credentials)))
+      .then(() => getCurrentTrack(dispatch, getState))
       .catch(console.log);
   } else {
     // Unknown error
