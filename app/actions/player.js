@@ -128,9 +128,10 @@ export const playerAction = action => (dispatch, getState) => {
   const { player } = getState();
   playerUtils[action](player)
     .then(msg => {
-      if (msg.status === 404) {
-        // A 404 means that no device has been selected as active.
-        // The playback will be transferred to the last active device.
+      if (msg.status !== 204) {
+        // A status different than 204 might mean that no device has been selected as
+        // active. An attempt to transfer the playback to the last active device will
+        // be performed.
         dispatch(transferPlayback(player.lastActiveDevice));
         return msg.text();
       }
