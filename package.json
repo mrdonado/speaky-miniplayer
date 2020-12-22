@@ -255,7 +255,7 @@
     "electron-log": "^3.0.9",
     "electron-updater": "^4.2.5",
     "history": "^4.10.1",
-    "node-notifier": "^5.4.3",
+    "node-notifier": "^8.0.1",
     "raw-loader": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
